@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<style>
+
+body {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: steelblue;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.legend line {
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+</style>
+</head>
+<body>
+<script src="../js/d3.js"></script>
+<script>
+
+var margin = {top: 20, right: 100, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .rangeRound([height, 0]);
+
+var color = d3.scale.ordinal()
+    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .tickFormat(d3.format(".0%"));
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+//d3.csv("data.csv", function(error, data) {
+  var data = getData();
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "State"; }));
+
+  data.forEach(function(d) {
+    var y0 = 0;
+    d.ages = color.domain().map(function(name) { return {name: name, y0: y0, y1: y0 += +d[name]}; });
+    d.ages.forEach(function(d) { d.y0 /= y0; d.y1 /= y0; });
+  });
+
+  data.sort(function(a, b) { return b.ages[0].y1 - a.ages[0].y1; });
+
+  x.domain(data.map(function(d) { return d.State; }));
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis);
+
+  var state = svg.selectAll(".state")
+      .data(data)
+    .enter().append("g")
+      .attr("class", "state")
+      .attr("transform", function(d) { return "translate(" + x(d.State) + ",0)"; });
+
+  state.selectAll("rect")
+      .data(function(d) { return d.ages; })
+    .enter().append("rect")
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.y1); })
+      .attr("height", function(d) { return y(d.y0) - y(d.y1); })
+      .style("fill", function(d) { return color(d.name); });
+
+  var legend = svg.select(".state:last-child").selectAll(".legend")
+      .data(function(d) { return d.ages; })
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d) { return "translate(" + x.rangeBand() / 2 + "," + y((d.y0 + d.y1) / 2) + ")"; });
+
+  legend.append("line")
+      .attr("x2", 10);
+
+  legend.append("text")
+      .attr("x", 13)
+      .attr("dy", ".35em")
+      .text(function(d) { return d.name; });
+
+//});
+
+function getData() {
+    return [
+{ "Audio": "0",
+  "Meta-47": "259034",
+  "Meta-276": "0",
+  "Motion": "1231572",
+  "Video": "1215966",
+  "Clip": "641667",
+  "State": "C1",
+  "Available": "310504"
+},
+{ "Audio": "0",
+  "Meta-47": "42153",
+  "Meta-276": "0",
+  "Motion": "198724",
+  "Video": "183159",
+  "Clip": "50277",
+  "State": "C2",
+  "Available": "52083"
+},
+{ "Audio": "0",
+  "Meta-47": "362642",
+  "Meta-276": "0",
+  "Motion": "1804762",
+  "Video": "1523681",
+  "Clip": "862573",
+  "State": "C3",
+  "Available": "515910"
+},
+{ "Audio": "343207",
+  "Meta-47": "157204",
+  "Meta-276": "0",
+  "Motion": "754420",
+  "Video": "727124",
+  "Clip": "0",
+  "State": "C4",
+  "Available": "202070"
+},
+{ "Audio": "4499890",
+  "Meta-47": "2159981",
+  "Meta-276": "3853788",
+  "Motion": "10604510",
+  "Video": "8819342",
+  "Clip": "4114496",
+  "State": "C5",
+  "Available": "2704659"
+},
+{ "Audio": "587154",
+  "Meta-47": "261701",
+  "Meta-276": "466194",
+  "Motion": "1464939",
+  "Video": "1290094",
+  "Clip": "0",
+  "State": "C6",
+  "Available": "358280"
+},
+{ "Audio": "403658",
+  "Meta-47": "196918",
+  "Meta-276": "325110",
+  "Motion": "916955",
+  "Video": "968967",
+  "Clip": "478007",
+  "State": "C7",
+  "Available": "211637"
+},
+{ "Audio": "0",
+  "Meta-47": "47414",
+  "Meta-276": "84464",
+  "Motion": "230183",
+  "Video": "230528",
+  "Clip": "121688",
+  "State": "C8",
+  "Available": "59319"
+},
+{ "Audio": "12840",
+  "Meta-47": "25225",
+  "Meta-276": "0",
+  "Motion": "193557",
+  "Video": "140043",
+  "Clip": "0",
+  "State": "C9",
+  "Available": "36352"
+},
+{ "Audio": "1938695",
+  "Meta-47": "925060",
+  "Meta-276": "1607297",
+  "Motion": "4782119",
+  "Video": "4746856",
+  "Clip": "3187797",
+  "State": "CA",
+  "Available": "1140516"
+},
+{ "Audio": "0",
+  "Meta-47": "557860",
+  "Meta-276": "919876",
+  "Motion": "2846985",
+  "Video": "2389018",
+  "Clip": "981024",
+  "State": "CB",
+  "Available": "740521"
+},
+{ "Audio": "0",
+  "Meta-47": "64011",
+  "Meta-276": "0",
+  "Motion": "356237",
+  "Video": "331817",
+  "Clip": "0",
+  "State": "CC",
+  "Available": "87207"
+},
+{ "Audio": "201192",
+  "Meta-47": "89702",
+  "Meta-276": "147606",
+  "Motion": "406247",
+  "Video": "375173",
+  "Clip": "0",
+  "State": "CD",
+  "Available": "121746"
+},
+{ "Audio": "0",
+  "Meta-47": "725973",
+  "Meta-276": "0",
+  "Motion": "3596343",
+  "Video": "3239173",
+  "Clip": "1575308",
+  "State": "CE",
+  "Available": "894368"
+},
+{ "Audio": "780199",
+  "Meta-47": "361393",
+  "Meta-276": "605863",
+  "Motion": "1724528",
+  "Video": "1647881",
+  "Clip": "0",
+  "State": "CF",
+  "Available": "443089"
+},
+{ "Audio": "0",
+  "Meta-47": "165883",
+  "Meta-276": "0",
+  "Motion": "750505",
+  "Video": "788485",
+  "Clip": "444554",
+  "State": "CE",
+  "Available": "201321"
+},
+{ "Audio": "342134",
+  "Meta-47": "155822",
+  "Meta-276": "293114",
+  "Motion": "728166",
+  "Video": "713663",
+  "Clip": "0",
+  "State": "CF",
+  "Available": "202529"
+},
+{ "Audio": "0",
+  "Meta-47": "229927",
+  "Meta-276": "381394",
+  "Motion": "1179637",
+  "Video": "1134283",
+  "Clip": "0",
+  "State": "CG",
+  "Available": "284601"
+},
+{ "Audio": "542341",
+  "Meta-47": "254916",
+  "Meta-276": "471275",
+  "Motion": "1162463",
+  "Video": "1128771",
+  "Clip": "540314",
+  "State": "CH",
+  "Available": "310716"
+},
+{ "Audio": "103656",
+  "Meta-47": "69752",
+  "Meta-276": "0",
+  "Motion": "331809",
+  "Video": "397911",
+  "Clip": "0",
+  "State": "CI",
+  "Available": "71459"
+},
+{ "Audio": "651923",
+  "Meta-47": "316873",
+  "Meta-276": "543470",
+  "Motion": "1556225",
+  "Video": "1513754",
+  "Clip": "679565",
+  "State": "CJ",
+  "Available": "371787"
+},
+{ "Audio": "0",
+  "Meta-47": "341713",
+  "Meta-276": "0",
+  "Motion": "1782449",
+  "Video": "1751508",
+  "Clip": "0",
+  "State": "CK",
+  "Available": "383568"
+},
+{ "Audio": "1179503",
+  "Meta-47": "585169",
+  "Meta-276": "0",
+  "Motion": "2628322",
+  "Video": "2706100",
+  "Clip": "0",
+  "State": "CL",
+  "Available": "625526"
+},
+{ "Audio": "606802",
+  "Meta-47": "289371",
+  "Meta-276": "507289",
+  "Motion": "1416063",
+  "Video": "1391878",
+  "Clip": "0",
+  "State": "CM",
+  "Available": "358471"
+},
+{ "Audio": "0",
+  "Meta-47": "174405",
+  "Meta-276": "0",
+  "Motion": "764203",
+  "Video": "730133",
+  "Clip": "0",
+  "State": "CN",
+  "Available": "220813"
+},
+{ "Audio": "0",
+  "Meta-47": "331543",
+  "Meta-276": "0",
+  "Motion": "1569626",
+  "Video": "1554812",
+  "Clip": "805235",
+  "State": "CO",
+  "Available": "399450"
+},
+{ "Audio": "0",
+  "Meta-47": "53156",
+  "Meta-276": "95232",
+  "Motion": "236297",
+  "Video": "278241",
+  "Clip": "0",
+  "State": "CP",
+  "Available": "61114"
+},
+{ "Audio": "0",
+  "Meta-47": "99638",
+  "Meta-276": "0",
+  "Motion": "457177",
+  "Video": "451756",
+  "Clip": "240847",
+  "State": "CQ",
+  "Available": "132092"
+},
+{ "Audio": "0",
+  "Meta-47": "142976",
+  "Meta-276": "212379",
+  "Motion": "769913",
+  "Video": "653357",
+  "Clip": "0",
+  "State": "CR",
+  "Available": "199175"
+},
+{ "Audio": "144235",
+  "Meta-47": "73826",
+  "Meta-276": "119114",
+  "Motion": "345109",
+  "Video": "388250",
+  "Clip": "0",
+  "State": "CS",
+  "Available": "75297"
+},
+{ "Audio": "1011656",
+  "Meta-47": "478505",
+  "Meta-276": "0",
+  "Motion": "2379649",
+  "Video": "2335168",
+  "Clip": "0",
+  "State": "CT",
+  "Available": "557421"
+},
+{ "Audio": "241326",
+  "Meta-47": "112801",
+  "Meta-276": "0",
+  "Motion": "517154",
+  "Video": "501604",
+  "Clip": "0",
+  "State": "CU",
+  "Available": "148323"
+},
+{ "Audio": "0",
+  "Meta-47": "1058031",
+  "Meta-276": "0",
+  "Motion": "5355235",
+  "Video": "5120254",
+  "Clip": "2607672",
+  "State": "CV",
+  "Available": "1208495"
+},
+{ "Audio": "0",
+  "Meta-47": "492964",
+  "Meta-276": "883397",
+  "Motion": "2575603",
+  "Video": "2380685",
+  "Clip": "0",
+  "State": "CW",
+  "Available": "652823"
+},
+{ "Audio": "67358",
+  "Meta-47": "33794",
+  "Meta-276": "0",
+  "Motion": "154913",
+  "Video": "166615",
+  "Clip": "0",
+  "State": "CX",
+  "Available": "41896"
+},
+{ "Audio": "1340492",
+  "Meta-47": "646135",
+  "Meta-276": "1081734",
+  "Motion": "3019147",
+  "Video": "3083815",
+  "Clip": "1570837",
+  "State": "CY",
+  "Available": "743750"
+},
+{ "Audio": "0",
+  "Meta-47": "200562",
+  "Meta-276": "0",
+  "Motion": "957085",
+  "Video": "918688",
+  "Clip": "0",
+  "State": "CZ",
+  "Available": "266547"
+},
+{ "Audio": "424167",
+  "Meta-47": "199925",
+  "Meta-276": "338162",
+  "Motion": "1044056",
+  "Video": "1036269",
+  "Clip": "503998",
+  "State": "V1",
+  "Available": "243483"
+},
+{ "Audio": "1345341",
+  "Meta-47": "679201",
+  "Meta-276": "0",
+  "Motion": "3157759",
+  "Video": "3414001",
+  "Clip": "0",
+  "State": "V2",
+  "Available": "737462"
+},
+{ "Audio": "111408",
+  "Meta-47": "56198",
+  "Meta-276": "0",
+  "Motion": "277779",
+  "Video": "282321",
+  "Clip": "147646",
+  "State": "V3",
+  "Available": "60934"
+},
+{ "Audio": "517803",
+  "Meta-47": "245400",
+  "Meta-276": "0",
+  "Motion": "1193112",
+  "Video": "1186019",
+  "Clip": "0",
+  "State": "V4",
+  "Available": "303024"
+},
+{ "Audio": "94438",
+  "Meta-47": "45305",
+  "Meta-276": "82869",
+  "Motion": "196738",
+  "Video": "210178",
+  "Clip": "116100",
+  "State": "V5",
+  "Available": "58566"
+},
+{ "Audio": "725948",
+  "Meta-47": "336312",
+  "Meta-276": "0",
+  "Motion": "1719433",
+  "Video": "1646623",
+  "Clip": "0",
+  "State": "V6",
+  "Available": "416334"
+},
+{ "Audio": "3277946",
+  "Meta-47": "1420518",
+  "Meta-276": "0",
+  "Motion": "7017731",
+  "Video": "5656528",
+  "Clip": "0",
+  "State": "V7",
+  "Available": "2027307"
+},
+{ "Audio": "413034",
+  "Meta-47": "167685",
+  "Meta-276": "329585",
+  "Motion": "772024",
+  "Video": "538978",
+  "Clip": "0",
+  "State": "V8",
+  "Available": "268916"
+},
+{ "Audio": "32500",
+  "Meta-47": "33757",
+  "Meta-276": "0",
+  "Motion": "155419",
+  "Video": "188593",
+  "Clip": "0",
+  "State": "V9",
+  "Available": "32635"
+},
+{ "Audio": "887525",
+  "Meta-47": "413004",
+  "Meta-276": "768475",
+  "Motion": "2203286",
+  "Video": "2033550",
+  "Clip": "940577",
+  "State": "VA",
+  "Available": "522672"
+},
+{ "Audio": "750274",
+  "Meta-47": "357782",
+  "Meta-276": "610378",
+  "Motion": "1850983",
+  "Video": "1762811",
+  "Clip": "0",
+  "State": "VB",
+  "Available": "433119"
+},
+{ "Audio": "189649",
+  "Meta-47": "91074",
+  "Meta-276": "0",
+  "Motion": "470749",
+  "Video": "514505",
+  "Clip": "0",
+  "State": "VC",
+  "Available": "105435"
+},
+{ "Audio": "640286",
+  "Meta-47": "311849",
+  "Meta-276": "553914",
+  "Motion": "1487457",
+  "Video": "1522038",
+  "Clip": "750146",
+  "State": "VD",
+  "Available": "362277"
+},
+{ "Audio": "60890",
+  "Meta-47": "29314",
+  "Meta-276": "0",
+  "Motion": "137338",
+  "Video": "147279",
+  "Clip": "0",
+  "State": "VE",
+  "Available": "38253"
+}
+];
+
+}
+
+</script>
+</body>
+</html>

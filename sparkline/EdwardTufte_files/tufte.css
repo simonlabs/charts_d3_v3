@@ -1,0 +1,103 @@
+.fullwidthtable {} 
+
+.forum {
+	color: #CC0000;
+	font-size: 11px;
+	font-family: Arial, Helvetica, sans-serif;
+	line-height: 15px;
+}
+
+.text { font-size: 15px; color: #000000;font-family: Arial, Helvetica, sans-serif; line-height: 21px;}
+.textsm { font-size: 14px; color: #000000;font-family: Arial, Helvetica, sans-serif; line-height: 21px;}
+.textxsm { font-size: 13px; color: #000000;font-family: Arial, Helvetica, sans-serif; line-height: 21px;}
+.link { text-decoration: none; color=#CC0000}
+.link:hover { text-decoration: underline; color: #CC0000}
+.belink { text-decoration: none; color=#000000}
+.belink:hover { text-decoration: underline; color: #CC0000}
+.taglink { margin-top: 4pt; }
+.smalltext {
+	font-family:'Times New Roman','Times','Serif';
+	font-size:13px;
+	text-decoration:none;
+	color:black;
+}
+
+.bboard_image_credit { font-size: 10pt; color: #000000; font-family: Times, Arial, Helvetica, sans-serif; line-height: 21px;}
+
+.tufte_navbar {
+	font-family: 'GillSans', 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', sans-serif;
+	font-size: 11px;
+	font-stretch: normal;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	letter-spacing:	 0.08em;
+	line-height: 14px;
+	margin-bottom: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-top: 0px;
+	opacity: 1.00;
+	padding-bottom: 0px;
+	padding-top: 0px;
+	text-decoration: none;
+	text-indent: 0px;
+	text-transform: none;
+}
+
+a.tufte_navbar_a {
+   	color: rgb(66, 66, 66);
+	text-decoration: none;
+}
+
+a.tufte_navbar_a:visited {
+	color: rgb(66, 66, 66);
+}
+
+a.tufte_navbar_a:hover {
+	color: rgb(220, 45, 21);
+}
+
+.red_header {
+	font-family: 'GillSans', 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', 'sans-serif';
+	font-size: 15px; 
+	font-weight: bold;
+	letter-spacing: 0.06em;
+	color: rgb(216, 50, 30); 
+	line-height: 25px;
+	margin-bottom: 10px;
+}
+
+.red_page_title {
+	font-family: 'GillSans', 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', 'sans-serif';
+	font-size: 1.17em; 
+	font-weight: bold;
+	letter-spacing: 0.06em;
+	color: rgb(216, 50, 30); 
+	line-height: 25px;
+	margin-bottom: 10px;
+	margin-left: 2px;
+}
+
+.book_title {
+	font-family: 'GillSans', 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', 'sans-serif';
+	font-size: 14px; 
+	font-weight: bold;
+	letter-spacing: 0.08em; 
+	color: rgb(220, 65, 41); 
+	line-height: 20px;
+	margin-bottom: 10px;
+}
+
+.product_title { 
+	font-family: 'GillSans', 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', sans-serif; 
+	color: rgb(216, 50, 30); 
+	font-weight: 100;
+}
+
+.search_box {
+	width: 205px; 
+	font-size: 11px; 
+	font-family: 'GillSans', 'Gill Sans MT', 'Gill Sans', 'Trebuchet MS', sans-serif; 
+	color: #999999;
+}

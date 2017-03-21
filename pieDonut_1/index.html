@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<style>
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  width: 960px;
+  height: 500px;
+  position: relative;
+}
+
+svg {
+	width: 100%;
+	height: 100%;
+}
+
+path.slice{
+	stroke-width:2px;
+}
+
+polyline{
+	opacity: .3;
+	stroke: black;
+	stroke-width: 2px;
+	fill: none;
+}
+
+</style>
+</head>
+<body>
+<button class="randomize">randomize</button>
+
+<script src="../js/d3.js"></script>
+<script>
+
+var svg = d3.select("body")
+	.append("svg")
+	.append("g")
+
+svg.append("g")
+	.attr("class", "slices");
+svg.append("g")
+	.attr("class", "labels");
+svg.append("g")
+	.attr("class", "lines");
+
+var width = 960,
+    height = 450,
+	radius = Math.min(width, height) / 2;
+
+var pie = d3.layout.pie()
+	.sort(null)
+	.value(function(d) {
+		return d.value;
+	});
+
+var arc = d3.svg.arc()
+	.outerRadius(radius * 0.8)
+	.innerRadius(radius * 0.4);
+
+var outerArc = d3.svg.arc()
+	.innerRadius(radius * 0.9)
+	.outerRadius(radius * 0.9);
+
+svg.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+var key = function(d){ return d.data.label; };
+
+var color = d3.scale.ordinal()
+	.domain(["Lorem ipsum", "dolor sit", "amet", "consectetur", "adipisicing", "elit", "sed", "do", "eiusmod", "tempor", "incididunt"])
+	.range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+
+function randomData (){
+	var labels = color.domain();
+	return labels.map(function(label){
+		return { label: label, value: Math.random() }
+	});
+}
+
+change(randomData());
+
+d3.select(".randomize")
+	.on("click", function(){
+		change(randomData());
+	});
+
+
+function change(data) {
+
+	/* ------- PIE SLICES -------*/
+	var slice = svg.select(".slices").selectAll("path.slice")
+		.data(pie(data), key);
+
+	slice.enter()
+		.insert("path")
+		.style("fill", function(d) { return color(d.data.label); })
+		.attr("class", "slice");
+
+	slice		
+		.transition().duration(1000)
+		.attrTween("d", function(d) {
+			this._current = this._current || d;
+			var interpolate = d3.interpolate(this._current, d);
+			this._current = interpolate(0);
+			return function(t) {
+				return arc(interpolate(t));
+			};
+		})
+
+	slice.exit()
+		.remove();
+
+	/* ------- TEXT LABELS -------*/
+
+	var text = svg.select(".labels").selectAll("text")
+		.data(pie(data), key);
+
+	text.enter()
+		.append("text")
+		.attr("dy", ".35em")
+		.text(function(d) {
+			return d.data.label;
+		});
+	
+	function midAngle(d){
+		return d.startAngle + (d.endAngle - d.startAngle)/2;
+	}
+
+	text.transition().duration(1000)
+		.attrTween("transform", function(d) {
+			this._current = this._current || d;
+			var interpolate = d3.interpolate(this._current, d);
+			this._current = interpolate(0);
+			return function(t) {
+				var d2 = interpolate(t);
+				var pos = outerArc.centroid(d2);
+				pos[0] = radius * (midAngle(d2) < Math.PI ? 1 : -1);
+				return "translate("+ pos +")";
+			};
+		})
+		.styleTween("text-anchor", function(d){
+			this._current = this._current || d;
+			var interpolate = d3.interpolate(this._current, d);
+			this._current = interpolate(0);
+			return function(t) {
+				var d2 = interpolate(t);
+				return midAngle(d2) < Math.PI ? "start":"end";
+			};
+		});
+
+	text.exit()
+		.remove();
+
+	/* ------- SLICE TO TEXT POLYLINES -------*/
+
+	var polyline = svg.select(".lines").selectAll("polyline")
+		.data(pie(data), key);
+	
+	polyline.enter()
+		.append("polyline");
+
+	polyline.transition().duration(1000)
+		.attrTween("points", function(d){
+			this._current = this._current || d;
+			var interpolate = d3.interpolate(this._current, d);
+			this._current = interpolate(0);
+			return function(t) {
+				var d2 = interpolate(t);
+				var pos = outerArc.centroid(d2);
+				pos[0] = radius * 0.95 * (midAngle(d2) < Math.PI ? 1 : -1);
+				return [arc.centroid(d2), outerArc.centroid(d2), pos];
+			};			
+		});
+	
+	polyline.exit()
+		.remove();
+};
+
+</script><svg><g transform="translate(480,225)"><g class="slices"><path class="slice" d="M1.1021821192326179e-14,-180A180,180 0 0,1 75.82712274651242,-163.2490350843929L37.91356137325621,-81.62451754219644A90,90 0 0,0 5.5109105961630896e-15,-90Z" style="fill: rgb(152, 171, 197);"></path><path class="slice" d="M75.82712274651242,-163.2490350843929A180,180 0 0,1 98.6085652369331,-150.58668886031563L49.30428261846655,-75.29334443015782A90,90 0 0,0 37.91356137325621,-81.62451754219644Z" style="fill: rgb(138, 137, 166);"></path><path class="slice" d="M98.6085652369331,-150.58668886031563A180,180 0 0,1 143.74743078042547,-108.33594114617173L71.87371539021274,-54.16797057308587A90,90 0 0,0 49.30428261846655,-75.29334443015782Z" style="fill: rgb(123, 104, 136);"></path><path class="slice" d="M143.74743078042547,-108.33594114617173A180,180 0 0,1 172.97399709079235,49.79956154861773L86.48699854539618,24.899780774308866A90,90 0 0,0 71.87371539021274,-54.16797057308587Z" style="fill: rgb(107, 72, 107);"></path><path class="slice" d="M172.97399709079235,49.79956154861773A180,180 0 0,1 124.44081113744932,130.05569777389098L62.22040556872466,65.02784888694549A90,90 0 0,0 86.48699854539618,24.899780774308866Z" style="fill: rgb(160, 93, 86);"></path><path class="slice" d="M124.44081113744932,130.05569777389098A180,180 0 0,1 69.04350927692273,166.23174734907735L34.52175463846137,83.11587367453868A90,90 0 0,0 62.22040556872466,65.02784888694549Z" style="fill: rgb(208, 116, 60);"></path><path class="slice" d="M69.04350927692273,166.23174734907735A180,180 0 0,1 -39.17782231024322,175.684655673246L-19.58891115512161,87.842327836623A90,90 0 0,0 34.52175463846137,83.11587367453868Z" style="fill: rgb(255, 140, 0);"></path><path class="slice" d="M-39.17782231024322,175.684655673246A180,180 0 0,1 -106.04137722188626,145.44836306017893L-53.02068861094313,72.72418153008947A90,90 0 0,0 -19.58891115512161,87.842327836623Z" style="fill: rgb(152, 171, 197);"></path><path class="slice" d="M-106.04137722188626,145.44836306017893A180,180 0 0,1 -179.8482276481898,-7.390197007177832L-89.9241138240949,-3.695098503588916A90,90 0 0,0 -53.02068861094313,72.72418153008947Z" style="fill: rgb(138, 137, 166);"></path><path class="slice" d="M-179.8482276481898,-7.390197007177832A180,180 0 0,1 -138.6291681086224,-114.81268984529241L-69.3145840543112,-57.406344922646205A90,90 0 0,0 -89.9241138240949,-3.695098503588916Z" style="fill: rgb(123, 104, 136);"></path><path class="slice" d="M-138.6291681086224,-114.81268984529241A180,180 0 0,1 -3.3065463576978534e-14,-180L-1.6532731788489267e-14,-90A90,90 0 0,0 -69.3145840543112,-57.406344922646205Z" style="fill: rgb(107, 72, 107);"></path></g><g class="labels"><text dy=".35em" transform="translate(225,-197.73267408949292)" style="text-anchor: start;">Lorem ipsum</text><text dy=".35em" transform="translate(225,-176.99709032095228)" style="text-anchor: start;">dolor sit</text><text dy=".35em" transform="translate(225,-147.84063007269242)" style="text-anchor: start;">amet</text><text dy=".35em" transform="translate(225,-36.802720108440816)" style="text-anchor: start;">consectetur</text><text dy=".35em" transform="translate(225,104.78724986596053)" style="text-anchor: start;">adipisicing</text><text dy=".35em" transform="translate(225,169.54977152816443)" style="text-anchor: start;">elit</text><text dy=".35em" transform="translate(225,201.73188952717274)" style="text-anchor: start;">sed</text><text dy=".35em" transform="translate(-225,184.51127597653743)" style="text-anchor: end;">do</text><text dy=".35em" transform="translate(-225,88.05866694739272)" style="text-anchor: end;">eiusmod</text><text dy=".35em" transform="translate(-225,-72.54408870582836)" style="text-anchor: end;">tempor</text><text dy=".35em" transform="translate(-225,-183.25121541940814)" style="text-anchor: end;">incididunt</text></g><g class="lines"><polyline points="29.12074172909422,-131.82178272632862,43.68111259364133,-197.73267408949292,213.75,-197.73267408949292"></polyline><polyline points="65.5854998131503,-117.99806021396819,98.37824971972546,-176.99709032095228,213.75,-176.99709032095228"></polyline><polyline points="92.25423350649446,-98.56042004846162,138.38135025974168,-147.84063007269242,213.75,-147.84063007269242"></polyline><polyline points="132.75174791503756,-24.535146738960545,199.12762187255632,-36.802720108440816,213.75,-36.802720108440816"></polyline><polyline points="115.51985354239861,69.85816657730702,173.2797803135979,104.78724986596053,213.75,104.78724986596053"></polyline><polyline points="73.81395524409022,113.03318101877629,110.72093286613534,169.54977152816443,213.75,169.54977152816443"></polyline><polyline points="11.747240769106861,134.4879263514485,17.620861153660293,201.73188952717274,213.75,201.73188952717274"></polyline><polyline points="-55.625090411951675,123.00751731769162,-83.43763561792751,184.51127597653743,-213.75,184.51127597653743"></polyline><polyline points="-121.56739543780857,58.70577796492849,-182.35109315671284,88.05866694739272,-213.75,88.05866694739272"></polyline><polyline points="-126.03986176134191,-48.36272580388557,-189.05979264201287,-72.54408870582836,-213.75,-72.54408870582836"></polyline><polyline points="-57.44656279171168,-122.1674769462721,-86.16984418756752,-183.25121541940814,-213.75,-183.25121541940814"></polyline></g></g></svg>
+</body></html>

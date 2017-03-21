@@ -1,0 +1,23 @@
+Partition Chart: http://mbostock.github.io/d3/talk/20111018/partition.html
+Partition Chart (verticle): http://bl.ocks.org/mbostock/1005873
+
+Block Chart: http://bl.ocks.org/mbostock/4063582
+
+Circular Wheel: http://bl.ocks.org/kerryrodden/477c1bfb081b783f80ad
+Circular Wheel (with label): http://www.jasondavies.com/coffee-wheel/
+Circular Wheel (label + tooltip): http://bl.ocks.org/vgrocha/1580af34e56ee6224d33
+
+Bubble Pack: http://mbostock.github.io/d3/talk/20111116/pack-hierarchy.html
+
+Heatmap: http://bl.ocks.org/oyyd/859fafc8122977a3afd6
+
+Stacked Barchart (Normalized): 
+    https://github.com/mbostock/d3/wiki/Gallery
+    Scroll down to the "Basic Charts" section and look for an icon grid labeld with "100% Stacked Bars"
+Zoomable Bar Chart: http://bl.ocks.org/mbostock/1283663
+
+Swimlane Chart: http://bl.ocks.org/bunkat/1962173
+
+Multiple Set Time Series: http://bl.ocks.org/nsonnad/4175202
+
+Crossfilter Chart: http://square.github.io/crossfilter/

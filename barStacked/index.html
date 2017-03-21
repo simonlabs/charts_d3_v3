@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stacked Bar Chart</title>
+<script type="text/javascript" src="../js/d3.js" charset="utf-8"></script>
+<style type="text/css">
+
+.ledgend {
+    font-size: 1.4em;
+}
+
+svg {
+  width: 960px;
+  height: 500px;
+  border: solid 1px #ccc;
+  font: 10px sans-serif;
+  shape-rendering: crispEdges;
+}
+
+</style>
+</head>
+<body>
+<div class="ledgend">&nbsp;&nbsp;
+<div style="display:inline-block;background-color:lightblue;border:1px solid #c0c0c0;width:20px;height:20px;vertical-align:middle;"></div>&nbsp;video&nbsp;&nbsp;&nbsp;&nbsp;
+<div style="display:inline-block;background-color:lightpink;border:1px solid #c0c0c0;width:20px;height:20px;vertical-align:middle;"></div>&nbsp;audio&nbsp;&nbsp;&nbsp;&nbsp;
+<div style="display:inline-block;background-color:darkgray;border:1px solid #c0c0c0;width:20px;height:20px;vertical-align:middle;"></div>&nbsp;clip&nbsp;&nbsp;&nbsp;&nbsp;
+</div>
+<script type="text/javascript">
+
+var w = 960,
+    h = 500,
+    p = [20, 50, 30, 20],
+    x = d3.scale.ordinal().rangeRoundBands([0, w - p[1] - p[3]]),
+    y = d3.scale.linear().range([0, h - p[0] - p[2]]),
+    z = d3.scale.ordinal().range(["lightblue", "lightpink", "darkgray" ]),
+    parse = d3.time.format("%m/%Y").parse,
+    format = d3.time.format("%b");
+
+var svg = d3.select("body").append("svg:svg")
+    .attr("width", w)
+    .attr("height", h)
+  .append("svg:g")
+    .attr("transform", "translate(" + p[3] + "," + (h - p[2]) + ")");
+
+//d3.csv("crimea.csv", function(crimea) {
+  var crimea = getData();
+
+  // Transpose the data into layers by cause.
+  var causes = d3.layout.stack()(["video", "audio", "clip" ].map(function(cause) {
+    return crimea.map(function(d) {
+      return {x: parse(d.date), y: +d[cause]};
+    });
+  }));
+
+  // Compute the x-domain (by date) and y-domain (by top).
+  x.domain(causes[0].map(function(d) { return d.x; }));
+  y.domain([0, d3.max(causes[causes.length - 1], function(d) { return d.y0 + d.y; })]);
+
+  // Add a group for each cause.
+  var cause = svg.selectAll("g.cause")
+      .data(causes)
+    .enter().append("svg:g")
+      .attr("class", "cause")
+      .style("fill", function(d, i) { return z(i); })
+      .style("stroke", function(d, i) { return d3.rgb(z(i)).darker(); });
+
+  // Add a rect for each date.
+  var rect = cause.selectAll("rect")
+      .data(Object)
+    .enter().append("svg:rect")
+      .attr("x", function(d) { return x(d.x); })
+      .attr("y", function(d) { return -y(d.y0) - y(d.y); })
+      .attr("height", function(d) { return y(d.y); })
+      .attr("width", x.rangeBand());
+
+  // Add a label per date.
+  var label = svg.selectAll("text")
+      .data(x.domain())
+    .enter().append("svg:text")
+      .attr("x", function(d) { return x(d) + x.rangeBand() / 2; })
+      .attr("y", 6)
+      .attr("text-anchor", "middle")
+      .attr("dy", ".71em")
+      .text(format);
+
+  // Add y-axis rules.
+  var rule = svg.selectAll("g.rule")
+      .data(y.ticks(5))
+    .enter().append("svg:g")
+      .attr("class", "rule")
+      .attr("transform", function(d) { return "translate(0," + -y(d) + ")"; });
+
+  rule.append("svg:line")
+      .attr("x2", w - p[1] - p[3])
+      .style("stroke", function(d) { return d ? "#c0c0c0" : "#000"; })
+      .style("stroke-opacity", function(d) { return d ? .7 : null; });
+
+  rule.append("svg:text")
+      .attr("x", w - p[1] - p[3] + 6)
+      .attr("dy", ".35em")
+      .text(d3.format(",d"));
+//});
+
+function getData() {
+    return [
+{ date: "5/1854", audio: "0", clip: "95", video: "90" },
+{ date: "6/1854", audio: "0", clip: "40", video: "95" },
+{ date: "7/1854", audio: "0", clip: "140", video: "100" },
+{ date: "8/1854", audio: "20", clip: "150", video: "120" },
+{ date: "9/1854", audio: "220", clip: "230", video: "140" },
+{ date: "10/1854", audio: "305", clip: "310", video: "160" },
+{ date: "11/1854", audio: "480", clip: "290", video: "180" },
+{ date: "12/1854", audio: "295", clip: "310", video: "200" },
+{ date: "1/1855", audio: "230", clip: "460", video: "220" },
+{ date: "2/1855", audio: "180", clip: "520", video: "240" },
+{ date: "3/1855", audio: "155", clip: "350", video: "300" },
+{ date: "4/1855", audio: "195", clip: "195", video: "350" },
+{ date: "5/1855", audio: "180", clip: "155", video: "390" },
+{ date: "6/1855", audio: "330", clip: "130", video: "420" },
+{ date: "7/1855", audio: "260", clip: "130", video: "440" },
+{ date: "8/1855", audio: "290", clip: "110", video: "465" },
+{ date: "9/1855", audio: "355", clip: "100", video: "485" },
+{ date: "10/1855", audio: "135", clip: "95", video: "510" },
+{ date: "11/1855", audio: "100", clip: "140", video: "530" },
+{ date: "12/1855", audio: "40", clip: "120", video: "550" },
+{ date: "1/1856", audio: "0", clip: "160", video: "575" },
+{ date: "2/1856", audio: "0", clip: "100", video: "595" },
+{ date: "3/1856", audio: "0", clip: "125", video: "620" }
+];
+}
+
+</script>
+</body>
+</html>
+

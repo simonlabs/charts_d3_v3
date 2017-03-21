@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<title>Sparkline</title>
+<script src="../js/d3.js" charset="utf-8"></script>
+<style>
+/* tell the SVG path to be a thin blue line without any area fill */
+path {
+    stroke: steelblue;
+    stroke-width: 1;
+    fill: none;
+}
+
+table {
+    border-collapse: collapse;
+    border-color: #c0c0c0;
+    border-width: 1px;
+    border-style: solid;
+}
+
+th, td {
+    padding: 4px 2px 0 4px;
+    vertical-align: top;
+    text-align: left;
+    border-color: #c0c0c0;
+    border-width: 1pt;
+    border-style: solid;
+}
+
+.sparkline-chart {
+    position: relative;
+    width: 60px;
+    height: 15px;
+}
+</style>
+</head>
+<body>
+<div id="container"></div>
+<div id="graph" class="aGraph" style="position:relative;top:0px;left:0; float:left; width:300px; height:60px;"></div>
+
+<script>
+var createSparkline = function (el, data) {
+    // create an SVG element inside the #graph div that fills 100% of the div
+    //var graph = d3.select("#graph")
+    var graph = d3.select(el)
+                  .append("svg:svg")
+                    .attr("width", "100%")
+                    .attr("height", "100%");
+    
+    // create a simple data array that we'll plot with a line (this array represents only the Y values,
+    // the X will just be the index location)
+    //var data = [3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 9, 3, 6, 3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 9, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 9, 3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 9];
+    
+    // X scale will fit values from 0-10 within pixels 0-100
+    var xScale = d3.scale.linear().domain([0, 10]).range([0, 60]);
+    // Y scale will fit values from 0-10 within pixels 0-100
+    var yScale = d3.scale.linear().domain([0, 10]).range([0, 15]);
+    
+    // create a line object that represents the SVN line we're creating
+    var line = d3.svg.line()
+                 .x(function (d, i) { 
+                    return xScale(i);   // use the index i as the X coordinate
+                 })
+                 .y(function (d, i) { 
+                return yScale(d);   // use the scaled value from the data d as the Y coordinate
+             })
+
+    // display the line by appending an svg:path element with the data line we created above
+    graph.append("svg:path").attr("d", line(data));
+
+    return graph;
+};
+
+var data = [
+    { name: "cam-209", video: 123456,
+      recent: [3, 2, 1, 2, 2, 3, 4, 4, 5, 4,
+               5, 5, 6, 7, 6, 7, 6, 5, 6, 5,
+               6, 7, 7, 8, 7, 8, 8, 7, 8, 7,
+               6, 6, 7, 7, 3, 3, 4, 3, 4, 4,
+               5, 5, 6, 5, 6, 6, 7, 7, 8, 8,
+               8, 9]
+    },
+    { name: "cam-147", video: 100913,
+      recent: [4, 3, 3, 2, 2, 2, 3, 3, 4, 4,
+               4, 5, 5, 5, 6, 6, 6, 7, 1, 1,
+               2, 2, 2, 3, 3, 4, 4, 3, 2, 2,
+               3, 3, 4, 4, 5, 5, 6, 6, 6, 7,
+               7, 7, 8, 8, 8, 7, 7, 6, 6, 6,
+               5, 7]
+    },
+    { name: "cam-39", video: 97104,
+      recent: [2, 2, 3, 3, 4, 4, 4, 5, 5, 5,
+               6, 6, 7, 7, 8, 8, 9, 9, 9, 1,
+               1, 1, 2, 2, 3, 3, 3, 4, 4, 5,
+               5, 6, 6, 7, 7, 7, 2, 1, 1, 2,
+               3, 3, 4, 4, 5, 5, 6, 6, 7, 7,
+               8, 9]
+    },
+    { name: "cam-94", video: 900938,
+      recent: [3, 6, 2, 7, 5, 2, 1, 3, 8, 9,
+               2, 5, 9, 3, 6, 3, 6, 2, 7, 5,
+               2, 1, 3, 8, 9, 2, 5, 9, 2, 7,
+               5, 2, 1, 3, 8, 9, 2, 5, 9, 3,
+               //6, 5, 7, 5, 4, 3, 5, 6, 7, 5,
+               9, 9, 9, 9, 9, 9, 9, 9, 9, 9,
+               8, 9]
+    }
+];
+
+var createTable = function (id, data) {
+    var ct = document.getElementById(id);
+    var table = document.createElement("table");
+
+    var names = [ "Name", "Video", "Last 5 Days" ];
+    var d, row, r, cell, c, sparkline, div;
+
+    row = document.createElement("tr");
+    for (var i = 0; i < names.length; i++) {
+        c = document.createElement("th");
+        c.innerHTML = names[i];
+        row.appendChild(c);
+    }
+    table.appendChild(row);
+
+    for (r = 0; r < data.length; r++) {
+        d = data[r];
+        row = document.createElement("tr");
+
+        c = document.createElement("td");
+        c.innerHTML = d.name;
+        row.appendChild(c);
+
+        c = document.createElement("td");
+        c.innerHTML = d.video;
+        row.appendChild(c);
+
+        c = document.createElement("td");
+        div = document.createElement("div");
+        div.className = "sparkline-chart";
+        sparkline = createSparkline(div, d.recent);
+        c.appendChild(div);
+        row.appendChild(c);
+
+        table.appendChild(row);
+    }
+    ct.appendChild(table);
+};
+
+createTable("container", data);
+
+</script>
+
+
+<div style="clear:both;"><a href="EdwardTufte.htm">Also see further notes by Edward Tufte.</a></div>
+</body>
+</html>

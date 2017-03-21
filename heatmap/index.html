@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Days Hours Heatmap</title>    
+<meta charset="utf-8">
+<script type="text/javascript" src="../js/d3.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="days-hours-heatmap">
+      <!-- calibration and render type controller -->
+      <div class="calibration" role="calibration">
+        <div class="group" role="example">
+          <svg width="120" height="17">
+          <rect width="17" height="17" x="0" fill="#f6faaa"></rect><rect width="17" height="17" x="18" fill="#FEE08B"></rect><rect width="17" height="17" x="36" fill="#FDAE61"></rect><rect width="17" height="17" x="54" fill="#F46D43"></rect><rect width="17" height="17" x="72" fill="#D53E4F"></rect><rect width="17" height="17" x="90" fill="#9E0142"></rect></svg>
+          <div role="description" class="description">
+            <label>Less</label>
+            <label>More</label>
+          </div>        
+        </div>
+        <div role="toggleDisplay" class="display-control">
+          <div>
+            <input type="radio" name="displayType" checked="">
+            <label>count</label>
+          </div>
+          <div>
+            <input type="radio" name="displayType">
+            <label>daily</label> 
+          </div>
+        </div>
+      </div>
+      <!-- heatmap -->
+      <svg role="heatmap" class="heatmap"></svg>
+    </div>
+    
+<script type="text/javascript" src="app.js"></script>
+  
+</body>
+</html>

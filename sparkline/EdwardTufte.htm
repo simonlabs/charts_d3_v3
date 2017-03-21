@@ -1,0 +1,3253 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<title>Sparkline theory and practice by Edward Tufte</title>
+<link rel="stylesheet" type="text/css" href="EdwardTufte_files/tufte.css" media="all">
+<style>
+html,
+tbody {
+    font-size: 16pt;
+    font-family: times new roman, times, serif;
+}
+</style>
+<script async="" src="EdwardTufte_files/cbgapi.loaded_1"></script>
+<script async="" src="EdwardTufte_files/cbgapi.loaded_0"></script>
+<script src="EdwardTufte_files/ga.js" async="" type="text/javascript"></script>
+<script src="EdwardTufte_files/FancyZoom.js" type="text/javascript"></script>
+<script src="EdwardTufte_files/FancyZoomHTML.js" type="text/javascript"></script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-38452053-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</head>
+<body data-twttr-rendered="true" onload="setupZoom()" alink="#660000" bgcolor="#FFFFF3" link="#FF0000" text="#000000" vlink="#660000">
+
+<script type="text/javascript">
+if (navigator.appName=="Netscape") {
+  width = document.body.offsetWidth - 50;
+} else {
+  width = document.body.offsetWidth - 85;
+}
+
+stylesheet = document.styleSheets[0];
+
+if (stylesheet.cssRules)
+	rules = stylesheet.cssRules
+else if (stylesheet.rules)
+	rules = stylesheet.rules;
+
+// Take the last element of the style sheet
+rules[0].style.width = width;
+</script>
+
+<h2>Sparkline Theory and Practice</h2>
+<sup><i><a href="http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR">sparkline by Edward Tufte</a></i></sup>
+<br/>
+<table style="padding-top: 30px" border="0" cellpadding="0" cellspacing="0">
+	<tbody><tr>
+		<td>&nbsp;</td>
+		<td>
+		<p style="margin-right:8em;">A sparkline is a small intense, simple, word-sized graphic with 
+typographic resolution. Sparklines mean that graphics are no longer 
+cartoonish special occasions with captions and boxes, but rather 
+sparkline graphic can be everywhere a word or number can be: embedded in
+a sentence, table, headline, map, spreadsheet, graphic. From Edward 
+Tufte's book <i>Beautiful Evidence</i>.</p>
+<p><br>
+<i>New developments in sparklines: November 2013.</i>
+</p><p>
+<b><i>Diluting Perceptual Cluster/Streak Bias: 
+<br>Informal, Inline, Interocular Trauma Tests</i></b>
+<br></p><p>
+When people look at random number tables, they sees all kinds of clusters 
+<br>and streaks (in a completely random set of data). Similarly, when people are 
+<br>asked generate a random series of bits, they generate too few long streaks 
+<br>(such as 6 identical bits a row), because their model of what is random 
+<br>greatly underestimates the amount of streakiness in truly random data.
+<br></p>
+
+<p>
+To dilute streak-guessing, randomize on time over the same data, 
+<br>and compare random streaks with the observed data. 
+<br>Below, the top sparkline shows the season's win-loss sequence 
+<br>(the little horizontal line = home games, no line = road games). 
+<br>Weighting by overall record of wins/losses and home/road effects 
+<br>yields ten random sparklines. Hard to see the difference between 
+<br>real and random.</p><p>
+
+The 10 random sparkline sequences can be regenerated again and 
+<br>again by, oddly enough, clicking on "Regenerate random seasons."
+<br>This is looking a bit like bootstrap calculation. For the real and amazing 
+<br>bootstrap, applied to data graphics and contour lines, see Persi Diaconis 
+<br>and Bradley Efron, <a target="_blank" href="http://statistics.stanford.edu/%7Eckirby/techreports/BIO/BIO%2083.pdf">"Computer Intensive Methods in Statistics."</a>
+<br></p><p>The test of the 10 randomized sparklines vs. the actual data is an 
+<br>"Interocular Trauma Test" because the comparison hits the analyst right 
+<br>between the eyes. This little randomization check-up, which can be repeated 
+<br>again and again, is seen by the analyst at the very moment of making 
+<br>inferences based on a statistical graphic of observed data. 
+</p>
+<hr align="left" color="#666666" noshade="noshade" size="1">
+
+<a name="responses">
+
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p>
+<p><b><i>Sparklines: Intense, Simple, Word-Sized Graphics</i></b></p>
+<p>
+<br>
+<br>
+The most common data display is a noun accompanied by a number.<br>
+For example, a medical patient's current level of glucose is reported<br>
+in a clinical record as a word and number:
+<br>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-1073.gif" border="0" height="54" width="950"></td>
+      </tr>  
+    </tbody></table>
+
+Placed in the relevant context, a single number gains meaning. Thus<br>
+the most recent measurement of glucose should be compared with<br>
+earlier measurements for the patient. This data-line shows the path<br>
+of the last 80 readings of glucose:
+<br>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-1075.gif" border="0" height="57" width="950"></td>
+      </tr>  
+    </tbody></table>
+
+Lacking a scale of measurement, this free-floating line is dequantified.<br>
+At least we do know the value of the line's right-most data point,<br>
+which corresponds to the most recent value of glucose, the number<br>
+recorded at far right. Both representations of the most recent reading<br>
+are tied together with a color accent:
+<br>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-1077.gif" border="0" height="57" width="950"></td>
+      </tr>  
+    </tbody></table>
+
+Some useful context is provided by showing the <i>normal range</i> of<br>
+glucose, here as a gray band. Compared to normal limits, readings<br>
+above the band horizon are elevated, those below reduced:
+<br>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-1080.gif" border="0" height="59" width="950"></td>
+      </tr>  
+    </tbody></table>
+
+For clinical analysis, the task is to detect quickly and assess wayward<br>
+deviations from normal limits, shown here by visual deviations outside<br>
+the gray band. Multiplying this format brings in additional data from<br>
+the medical record; a stack, which can show hundreds of variables and<br>
+thousands of measurements, allows fast effective parallel comparisons:
+<br>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-1065.gif" border="0" height="104" width="950"></td>
+      </tr>  
+    </tbody></table>
+
+These little data lines, because of their active quality over time, are<br>
+named <i>sparklines</i>—small, high-resolution graphics usually embedded<br>
+in a full context of words, numbers, images. Sparklines are <i>datawords:</i><br>
+data-intense, design-simple, word-sized graphics.<br>
+&nbsp;&nbsp;&nbsp;Sparklines and sparkline-like graphs can also move within complex<br>
+multivariate spaces, as in these 9-step sequential results (reading down<br>
+the columns) in merge-sorting 5 different types of input files. Four<br>
+variables and 18,000 numbers are depicted in these small multiples.
+<br>
+<br>
+<font size="-1">Below, Robert Sedgewick, <i>Algorithms in C</i> (Reading, Massachusetts, 1998), 353.</font>
+</p><p>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-1067.gif" border="0" height="362" width="950"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+<br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+Sparklines have obvious applications for financial and economic data—<br>
+by tracking and comparing changes over time, by showing overall trend<br>
+along with local detail. Embedded in a data table, this sparkline depicts<br>
+an exchange rate (dollar cost of one euro) for every day for one year:
+<br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15655.gif" border="0" height="75" width="950"></td>
+      </tr>  
+    </tbody></table>
+<br>
+Colors help link the sparkline with the numbers: <font color="red">red</font> = the oldest and<br>
+newest rates in the series; <font color="blue">blue</font> = yearly low and high for daily exchange<br>
+rates. Extending this graphic table is straightforward; here, the price of<br>
+the euro versus 3 other currencies for 65 months and for 12 months:
+<br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15656.gif" border="0" height="119" width="950"></td>
+      </tr>  
+    </tbody></table>
+<br>
+Daily sparkline data can be standardized and scaled in all sorts of ways<br>
+depending on the content: by the range of the price, inflation-adjusted<br>
+price, percent change, percent change off of a market baseline. Thus<br>
+<i>multiple sparklines</i> can describe the same noun, just as multiple columns<br>
+of numbers report various measures of performance. These sparklines<br>
+reveal the details of the most recent 12 months in the context of a<br>
+65-month daily sequence (shown in the fractal-like structure below).
+<br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15658.gif" border="0" height="122" width="950"></td>
+      </tr>  
+    </tbody></table>
+<br>
+&nbsp;&nbsp;&nbsp;Consuming a horizontal length of only 14 letterspaces, each sparkline<br>
+in the big table above provides a look at the price and the changes in<br>
+price for every day for years, and the overall time pattern. <i>This financial<br>
+table reports 24 numbers accurate to 5 significant digits; the accompanying<br>
+sparklines show about 14,000 numbers readable from 1 to 2 significant digits.<br>
+The idea is to be approximately right rather than exactly wrong.</i>&nbsp;<font size="-1">1</font>
+<br>
+&nbsp;&nbsp;&nbsp;By showing recent change in relation to many past changes, sparklines<br>
+provide a context for nuanced analysis—and, one hopes, better decisions.<br>
+Moreover, the year-long daily history reduces <i>recency bias,</i> the persistent<br>
+and widespread over-weighting of recent events in making decisions.<br>
+Tables sometimes reinforce recency bias by showing only current levels<br>
+or recent changes; sparklines improve the attention span of tables.
+<br>
+&nbsp;&nbsp;&nbsp;Tables of numbers attain maximum densities of only 300 characters per<br>
+square inch or 50 characters per square centimeter. In contrast, graphical<br>
+displays have far greater resolutions; a cartographer notes "the resolving<br>
+power of the eye enables it to differentiate to 0.1 mm where provoked to<br>
+do so."&nbsp;<font size="-1">2</font> &nbsp;Distinctions at 0.1 mm mean 250 per linear inch, which implies<br>
+60,000 per square inch or 10,000 per square centimeter, which is plenty.
+<br><br>
+<br>
+<font size="-1">1&nbsp;&nbsp;On being "approximately right rather than exactly wrong,"<br>
+see John W. Tukey, "The Technical Tools of Statistics,"<br>
+<i>American Statistician,</i> 19 (1965), 23-28.
+</font></p><p><font size="-1">
+2&nbsp;&nbsp;D. P. Bickmore, "The Relevance of Cartography," in J. C. Davis<br>
+and M. J. McCullagh, eds., <i>Display and Analysis of Spatial Data</i><br>
+(London, 1975), 331.</font>
+</p><p>
+<br><br><br>
+Here is a conventional financial table comparing various return rates of<br>
+10 popular mutual funds:&nbsp;<font size="-1">3</font>
+<br><br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15738.gif" border="0" height="227" width="950"></td>
+      </tr>  
+    </tbody></table>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+This is a common display in data analysis: a list of nouns (mutual funds,<br>
+for example) along with some numbers (assets, changes) that accompany<br>
+the nouns. The analyst's job is to look over the data matrix and then decide<br>
+whether or not to go crazy—or at least to make a decision (buy, sell, hold)<br>
+about the noun based on the data. But along with the summary clumps<br>
+of tabular data, let us also look at the day-to-day path of prices and their<br>
+changes for the entire last year. Here is the sparkline table:&nbsp;<font size="-1">4</font>
+<br><br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15741.gif" border="0" height="191" width="950"></td>
+      </tr>  
+    </tbody></table>
+<br><br><br><br><br><br><br><br><br><br><br><br>
+Astonishing and disconcerting, the finely detailed similarities of these<br>
+daily sparkline histories are not all that surprising, after the fact anyway.<br>
+Several funds use market index-tracking or other copycat strategies, and<br>
+all the funds are driven daily by the same amalgam of external forces<br>
+(news, fads, economic policies, panics, bubbles). Of the 10 funds, only<br>
+the unfortunately named PIMCO, the sole bond fund in the table, diverges<br>
+from the common pattern of the 9 stock funds, as seen by comparing<br>
+PIMCO's sparkline with the stacked pile of 9 other sparklines below.
+<br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15743.gif" border="0" height="171" width="950"></td>
+      </tr>  
+    </tbody></table>
+<br><br><br><br><br><br><br><br><br><br>
+&nbsp;&nbsp;&nbsp;In newspaper financial tables, down the deep columns of numbers,<br>
+sparklines can be added to tables set at 8 lines per inch (as in our example<br>
+above). This yields about 160 sparklines per column, or <i>400,000 additional<br>
+daily graphical prices and their changes</i> per 5-column financial page. Readers<br>
+can scan the sparkline tables, making simultaneous multiple comparisons,<br>
+searching for nonrandom patterns in the random walks of prices.
+</p><p>
+<br>
+<font size="-1">3&nbsp;&nbsp;"Favorite Funds," <i>The New York Times,</i> August 10, 2003, p. 3-1.
+</font></p><p><font size="-1">
+4&nbsp;&nbsp;In our redesigned table, the typeface Gill Sans does quite well<br>
+compared to the Helvetica in the original <i>Times</i> table. Smaller than<br>
+the Helvetica, the Gill Sans appears sturdier and more readable, in<br>
+part because of the increased white space that results from its<br>
+smaller x-height and reduced size. The data area (without column<br>
+labels) for our sparkline table is only 21% larger than the original's<br>
+data area, and yet the sparklines provide an approximate look at<br>
+5,000 more numbers.</font>
+</p><p>
+<br><br>
+Finally, the practical construction of sparklines requires thinking<br>
+about their design and production: 
+<br>
+<br>
+<i>Aspect ratio</i>&nbsp;&nbsp;&nbsp;A graphic's width/height ratio makes a big difference in<br>
+displaying data. For <i>all</i> types of statistical graphics, the data-shape varies<br>
+as the aspect ratio varies. Below, for 6 sparklines all showing the same<br>
+data, note the substantial changes in shape as the y-scale increases by 25%<br>
+for each line while the x-scale is held constant.<br>
+</p><p>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15861.gif" border="0" height="276" width="950"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+How should a sparkline aspect ratio be chosen? Like a narrow ribbon, sparklines<br>
+have one long dimension and one short, as their wordlike shapes constrain their<br>
+aspect ratios. This financial sparkline is 5 to 1:
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15820.gif" border="0" height="31" width="950"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+the full baseball season is 20 to 1:
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15823.gif" border="0" height="31" width="950"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+the DNA chromosome sparklines run about 300 to 1.<br>
+&nbsp;&nbsp;&nbsp;In general, statistical graphics should be moderately greater in length<br>
+than in height. And, as William Cleveland discovered, for judging slopes<br>
+and velocities up and down the hills in time-series, best is an aspect ratio<br>
+that yields hill-slopes averaging 45°, over every cycle in the time-series.<br>
+Variations in slopes are best detected when the slopes are around 45°,<br>
+uphill or downhill.&nbsp;<font size="-1">5</font> To put this idea informally, aspect ratios should<br>
+be such that time-series graphics tend toward a <i>lumpy</i> profile (below left)<br>
+rather than a spiky profile (below right) or a flat profile. Both graphs<br>
+here show the same data. The aspect ratio for this lumpy graphic is<br>
+chosen in accord with the 45° rule.
+<br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15828.gif" border="0" height="253" width="950"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+<br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
+The lumpy graphic reveals that sunspot cycles tend to rise rapidly and<br>
+decline slowly, a behavior strongest for cycles with high sharp peaks, less<br>
+strong for medium peaks, and absent for cycles with small low peaks.<br>
+None of this is visible in the graph of spikes! Cleveland's idea is essential<br>
+for sparkline displays of high-resolution time-series, such as in acoustics,<br>
+medicine, science, engineering, finance. For multiple sparklines, as in the<br>
+mutual fund data below, a global aspect ratio is obtained by averaging<br>
+over the relevant data-lines to yield an overall lumpy quality.
+<br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15830.gif" border="0" height="201" width="950"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+&nbsp;&nbsp;&nbsp;These considerations yield practical advice for choosing aspect ratios for<br>
+sparklines: use the <i>maximum</i> reasonable vertical space available under the<br>
+word-like constraint, then adjust the horizontal stretch of the time-scale<br>
+to meet the lumpy criterion. Occasionally the analytical task or character<br>
+of the data may suggest a better alternative.
+<br>
+<br>
+<font size="-1">5&nbsp;&nbsp;William S. Cleveland, <i>Visualizing Data</i> (Summit, New Jersey, 1993), 87-91, 218-227;<br>
+William S. Cleveland, <i>The Elements of Graphing Data</i> (Summit, New Jersey, revised<br>
+edition, 1994), 66-79.</font>
+<br>
+<br>
+<br>
+</p><p>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15834.gif" border="0" height="98" width="950"></td>
+      </tr>  
+    </tbody></table>
+<br><br>
+</p><p>
+<i>Unintentional optical clutter</i>&nbsp;&nbsp;&nbsp;Above left, these binary-outcome sparklines<br>
+mainly show accidental arrangements of white space rather than binary<br>
+outcomes. Then, above right, a less cluttered version of the same data.<br>
+Closely spaced lines produce moiré vibration, usually at its worst when<br>
+data-lines (the figure) and spaces (the ground) between data-lines are<br>
+approximately equal in size, and also when figure and ground contrast<br>
+strongly in color value. The result is hyperactive optical clutter—for<br>
+example, below. In contrast, note the serene and cleanly differentiated<br>
+lines on this spring's new bamboo culm to the right.
+<br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15837.gif" border="0" height="162" width="950"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+&nbsp;&nbsp;&nbsp;Changing the relative weight of the data-lines and also muting the<br>
+contrast between data and background reduces optical noise, as these<br>
+before/after designs of sparklines suggest:
+<br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15836.gif" border="0" height="78" width="950"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+&nbsp;&nbsp;&nbsp;The standard method for printing color (4-color process) sometimes<br>
+produces unintentional noise when printing finely detailed material,<br>
+such as type and sparklines. In 4-color printing (cyan, magenta, yellow,<br>
+black), tiny dots of color mix together to make the desired color (for<br>
+example, cyan dots + yellow dots = apparent green). These color dots do<br>
+not align perfectly, and both type and thin lines can become gritty when<br>
+printed by conventional 4-color process, shown below.
+<br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15840.gif" border="0" height="98" width="950"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+High-quality maps avoid color dot combinations, as a close look at the<br>
+Swiss mountain map will indicate. Sparklines should be printed in a single<br>
+color, or by a judicious mix of 2 colors (magenta + yellow = red), or in flat<br>
+color (the ink itself is the desired color), or by stochastic color methods.<br>
+&nbsp;&nbsp;&nbsp;Areas surrounding data-lines may generate unintentional optical<br>
+clutter. Strong frames produce melodramatic but content-diminishing<br>
+visual effects. At left, the dominant visual elements are, of all things,<br>
+the strong stripes of the negative spaces between the heavy frames:
+<br>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0001OS-15841.gif" border="0" height="90" width="950"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+A good way to assess a display for unintentional optical clutter is to ask<br>
+"Do the prominent visual effects convey relevant content?" In the<br>
+exhibits above earning the unfortunate <font color="red">X</font>, the most prominent visual<br>
+effect is usually the clutter produced by activated negative space.<br>
+</p><p>
+<br><br>
+
+<i>Resolution of sparklines</i>&nbsp;&nbsp;&nbsp;Sparklines work at intense resolutions, at the level<br>
+of good typography and cartography. Currently such intensities can be<br>
+found only on paper, film, and metal—where resolutions &gt;1,200 dpi<br>
+are easily and inexpensively achieved. Today's computer monitors operate<br>
+at about 10% of paper's resolution, producing coarse typography in the<br>
+smaller point sizes as well as sparklines lacking in fine detail. Of course<br>
+sparklines can be displayed on computer screens but for serious work,<br>
+sparklines should be printed on paper. Combining paper's resolution<br>
+with the computer screen's interactivity is often effective.<br>
+</p><p>
+<i>Resolution of layouts of multiple sparklines</i>&nbsp;&nbsp;&nbsp;For monitoring processes that<br>
+produce lots of data (financial trading, sporting events, control rooms,<br>
+scientific and medical analysis, system administration), sparklines should<br>
+be printed and viewed at a density of 500 sparklines on A3 size paper<br>
+(about 25 x 45 cm, or 11 x 17 in). This is the data-equivalent of about 15<br>
+large computer screens or 300 PowerPoint slides. Unlike relentlessly<br>
+sequential screens and slides, 500 sparklines on a large piece of paper are<br>
+<i>adjacent in space</i> rather than <i>stacked in time</i>. By showing vast amounts<br>
+of data within the eyespan, spatial adjacency assists comparison, search,<br>
+pattern-finding, exploration, replication, review.<br>
+&nbsp;&nbsp;&nbsp;Just as sparklines are like <i>words</i>, so then distributions of sparklines on<br>
+a page are like <i>sentences and paragraphs</i>. The graphical idea here is <i>make<br>
+it wordlike and typographic</i>—an idea that leads to reasonable answers for<br>
+most questions about sparkline arrangements.<br>
+</p><p>
+Imagine new software or a new computer display that enormously<br>
+improved the resolution of data graphics. How wonderful and valuable<br>
+that would be. Sparklines provide such improvements <i>by design</i>, by<br>
+direct, public, open-source methods.<br>
+&nbsp;&nbsp;&nbsp;Sparklines vastly increase the amount of data within our eyespan and<br>
+intensify statistical graphics up to the everyday routine capabilities of<br>
+the human eye-brain system for reasoning about visual evidence, seeing<br>
+distinctions, and making comparisons. And data graphics are no longer<br>
+a special occasion in a separate place with a frame on some slide with a<br>
+label "Fig. 17-B". Sparklines are everywhere. With resolutions 5 to 100<br>
+times conventional graphics and tables, sparklines can help us learn from<br>
+the flood of numbers produced by modern measurement, monitoring,<br>
+and surveillance technologies. Providing a straightforward and contextual<br>
+look at intense evidence, sparkline graphics give us some chance to be<br>
+approximately right rather than exactly wrong.<br>
+</p><p>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</font></td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Multiple Sparklines and Bars; Implementation Example from Europe</i>
+</p><p> Below you will see our implementation of your sparkline idea 
+into a standard software application for data analysis. We have always 
+been very impressed of your rich examples and ideas for visualization. 
+The example shows data of a pharmaceutical manufacturer. The chart helps
+ in comparing the performance of their sales districts. <o:p></o:p></p>
+
+<p class="MsoNormal"><span style="mso-ansi-language:EN-GB" lang="EN-GB"><!--[if gte vml 1]><v:shapetype
+ id="_x0000_t75" coordsize="21600,21600" o:spt="75" o:preferrelative="t"
+ path="m@4@5l@4@11@9@11@9@5xe" filled="f" stroked="f">
+ <v:stroke joinstyle="miter"/>
+ <v:formulas>
+  <v:f eqn="if lineDrawn pixelLineWidth 0"/>
+  <v:f eqn="sum @0 1 0"/>
+  <v:f eqn="sum 0 0 @1"/>
+  <v:f eqn="prod @2 1 2"/>
+  <v:f eqn="prod @3 21600 pixelWidth"/>
+  <v:f eqn="prod @3 21600 pixelHeight"/>
+  <v:f eqn="sum @0 0 1"/>
+  <v:f eqn="prod @6 1 2"/>
+  <v:f eqn="prod @7 21600 pixelWidth"/>
+  <v:f eqn="sum @8 21600 0"/>
+  <v:f eqn="prod @7 21600 pixelHeight"/>
+  <v:f eqn="sum @10 21600 0"/>
+ </v:formulas>
+ <v:path o:extrusionok="f" gradientshapeok="t" o:connecttype="rect"/>
+ <o:lock v:ext="edit" aspectratio="t"/>
+</v:shapetype><v:shape id="_x0000_i1025" type="#_x0000_t75" style='width:327pt;
+ height:222.75pt'>
+ <v:imagedata src="http://www.bissantz.de/site_images/tufte/sparklines.png" o:title=""/>
+</v:shape><![endif]--><!--[if !vml]--><img src="EdwardTufte_files/sparklines.jpg" v:shapes="_x0000_i1025" height="297" width="436"><!--[endif]--><o:p></o:p></span></p>
+
+<p class="MsoNormal"><span style="mso-ansi-language:EN-GB" lang="EN-GB">After
+having
+ inhaled your books I set up a list of several dozen improvements we are
+ going to implement. We would appreciate and look forward to any comment
+ or feedback from you.
+</span></p><p>
+Sincerely yours,
+<br>
+Nicolas
+Bissantz
+
+  
+    </p><p>-- Nicolas Bissantz (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001Of">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>The red dot should refer to a specific number, as in the glucose 
+example on the opening page of the chapter. The bar chart wastes space; 
+you could show at least 100 numbers in the space that now shows 1 
+number. People read numbers in tables all the time (see the financial 
+section and sports section of any good newspaper) and they don't need 
+bars to see a bar to understand 1 number.</p><p></p><p>Background 
+colors, frames and boxes don't add much. Avoid all data frames; the 
+physical location of the numbers, words, and graphics enforces the 
+implicit grid; that grid never needs to be expressed directly. See the 
+euro exchange-rate table in the sparkline chapter; also the material on 
+frames near the end.  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Remarkable illustrations of firefly flights/flashes </i>
+</p><p>Here's an illustration of different firefly flight/flash 
+patterns (I suspect the original is much nicer than the web image):</p><p></p><p><a target="_blank" href="http://ase.tufts.edu/biology/Firefly/#Flash">http://ase.tufts.edu/biology/Firefly/#Flash</a></p><p></p><p>A straightened-out presentation of the traces would resemble the highway stripe graphic 
+in Chapter 7 of "Visual Display."   
+    </p><p>-- Alex Merz (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001P1">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Outlier treatment</i>
+</p><p>I have a request for your "how-to" section.  How would you handle
+ a sparkline that has a value well beyond the normal value, since 
+sparklines have an implied boundary?  </p><p></p><p>For example, a "drug
+ X" may sell about one hundred thousand dollars a month for "illness 1" 
+and then the drug may have a new found curative value for "illness 2".  
+"Illness 2" has no other drug, which would then put "drug X" in a 
+dominating position with sales in the millions.  How would you handle 
+the above scenario?  </p><p></p><p>
+I'd also like to see a weather example that uses the gray band for 
+normal ranges and possibly the use of red and blue for temperatures 
+above and below zero.</p><p></p><p>Sean
+  
+    </p><p>-- Sean Gerety (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001PA">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>Outliers are a problem in most statistical graphics, especially so 
+in sparklines because of the limits on the y-axis. Taking the 
+logarithm of Y is a good way to plot highly skewed data. Broken 
+scales are sometimes used.  Presumably tables will work. It 
+does depend on what sorts of variance are relevant.</p><p></p><p>Brad Paley and I prepared some weather sparklines, although 
+not with the good idea of cool/warm colors, but those sparklines 
+have not yet made their way into the chapter as it moves toward 
+closure.   
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>arctan transform?</i>
+</p><p> </p><p>Plotting arctan(<i>x/x</i><sub>0</sub>) instead of <i>x</i> is very effective for stabilizing residual plots with outliers. If the scaling factor <i>x</i><sub>0</sub> is chosen so that non-outlier values of <i>x/x</i><sub>0</sub>
+ fall in the range -0.6 to 0.6 then the arctan is within 10% of the  
+unscaled value (close enough to pass unnoticed in a residual plot), but 
+outliers, no matter how large, remain plottable, but still recognizable 
+as outliers. In practice, even if outliers are present one can still, 
+for example, recognize a systematic trend among the non-outliers. 
+ 
+</p><p>I have the impression that this approach is very little used, but I read about it around 25 years ago, probably in <cite>Technometrics</cite> or a similar journal.   
+    </p><p>-- Athel Cornish-Bowden (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001PE">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Interpretation of  transformed variables in regression equations</i>
+</p><p>Some transformations have reasonable interpretations, some don't.
+ In the 2-variable case, log Y on X, Y on log X, and log Y on log X, the
+ resulting slopes have clear substantive interpretations with regard to 
+the XY relationship. Log Y on log X is particularly helpful since the 
+resulting slope is the elasticity of Y in relation to X. Similarly for Y
+ on 1/X, or for log odds Y on log odds X. (More details in my Data 
+Analysis for Politics and Policy, pp. 108-131.)</p><p></p><p>But for Y 
+on arctan X, what does it mean to a reseacher to say that a unit change 
+in arctan X is associated with a corresponding estimated slope change in
+ Y? Thus optimizing the statistical properties of univariate 
+distributions, usually by transforming them into a normal distribution, 
+may at the same time be denying straightforward substantive 
+interpretations of bivariate or multivariate relationships. Peculiar 
+transforms useful for statistical courtesy seem contrary to nature. That
+ is, there are probably no laws of nature where Y varies in proportion 
+to arctan X (an assertion I may regret). </p><p></p><p>In the case of 
+sparklines, Y transforms should make sense in terms of the velocities up
+ and down the time-series. Time-scales can also be transformed, for 
+example, to estimate doubling-times (try logs to the base 2 of time).</p><p></p><p>I
+ was recently looking at some regressions of art auction prices on time;
+ the researcher included 5 powers of time (t, t-squared, t-cubed, t to 
+the fourth, and t to the fifth) in the multiple regression, resulting in
+ the ludicrous situation of figuring out, say, the meaning of a cubic 
+year, a unit change in cubic year, and how that relates to changes in 
+price. Little drawings of square years and cubic years didn't help. And 
+drawings were impossible for the hyperspace time scales. Yes, the 
+researcher was looking for turns in prices over time, but the exercise 
+had by then turned into mindless curve-fitting.  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p> We've incorporated the idea of sparklines into a new project 
+that we thought might be of interest to readers of this thread.
+
+Data visualizations of Google's massive news aggregator seem like an 
+interesting way to graphically keep tabs on developing news stories.
+
+We've built an In The News visualizer which provides a visual reference 
+for Google's "In The News" sidebar (seen at <a target="_blank" href="http://news.google.com/">news.google.com</a>),
+ providing an archive of popular news items, links to headlines, and a 
+method for comparing news item performance over time. We think this is 
+going to be increasingly interesting as the US election season 
+progresses, and stories about world events erupt and subside.
+
+The interface can be refocused on specific names, and groups of items 
+can be compared over time using sparkline graphs.
+
+<a target="_blank" href="http://news.stamen.com/">news.stamen.com</a>  
+    </p><p>-- Eric Rodenbeck (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001PS">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p> </p><p>Nonetheless, Mariano Belinsky's example is most 
+impressive -- not necessarily as a way of integrating graphs into text, 
+but as a way of packing a tremendous amount of intelligible information 
+into a small space. Even printed at high resolution on paper there are 
+few examples that get as much information into a small space as he does,
+ but on a computer screen I have rarely seen anything approaching it. By
+ my estimate he has 90000 pixels for the 15 stocks shown on his web 
+site, or 6000 per graph, yet one can easily see what each graph is doing
+ and where any sudden changes occurred. The use of colour is nice, as 
+well, though not entirely logical: red is used for stocks that fall and 
+also for the yearly low, which is fair enough; but the implied logic is 
+not carried over to the stocks that rise and the yearly high, which are 
+blue and green respectively. 
+ 
+</p><p>I'm not too worried about the lack of a scale for the <i>x</i> 
+axis, because it's not too difficult to mentally break up a year into 
+months. However, it might be possible to use vertical white lines to 
+mark off months, or, if that was too noticeable, quarters. Somewhere, 
+however, either in the text or on the graph itself, there ought to be a 
+clear indication of what the time period is. 
+ 
+</p><p>I am not at all keen on abbreviations. No, that puts it too 
+weakly: I absolutely detest avoidable abbreviations, especially if they 
+aren't guessable. I can guess what AMZN and MSFT are, and maybe AA, but 
+most of the others suggest nothing at all. With slightly smaller type 
+(and mixed upper- and lower-case) one could use much more obvious 
+labels: "Amazon" takes barely more space than "AMZN", and even though 
+"Microsoft" is appreciably longer than "MSFT" there would be room for 
+it. 
+ 
+</p><p>In my field (biochemistry) I argue about this all the time with 
+people who try to insist that (for example) "everybody knows" that LADH 
+is liver alcohol dehydrogenase and NADH is reduced nicotinamide adenine 
+dinucleotide. The problem, however, is that not everyone who reads any 
+given text is expert enough to know what "everybody knows".   
+    </p><p>-- Athel Cornish-Bowden (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001Qn">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> "Daticons" instead of "sparklines" or "datawords"?</i>
+</p><p> </p><p>I would like to suggest another possible name: <strong style="color: #F00;">daticons</strong>. (I’m pronoucing the ‘i’ as in if—I’ll leave it up to you to decide how the ‘a’ in dat should sound.)</p>
+
+<p>By combining data and icon, the name communicates the idea of packaging information in a <i>small</i>
+ graphic. It avoids the linear bias of sparklines (which makes me think 
+of an entire line of text, not just a single word). It also dodges the 
+possible confusion with Microsoft products that might accompany 
+wordgraphs.</p>
+
+<p>As a bonus, it appears to be a novel word, at least on the web. When I <a target="_blank" href="http://www.google.com/search?q=daticons">googled daticons</a>,
+ there were only six hits, and they were all in Italian. That leaves you
+ free to define the word without worrying about competing meanings that 
+might confuse your audience.</p>
+
+<p>One possible fly in the ointment: dat<strong style="color: #F00;">a</strong>cons (with an ‘a’ instead of an ‘i’) generates <a target="_blank" href="http://www.google.com/search?q=datacons">a lot of hits on google</a>, including a <a target="_blank" href="http://www.datacons.com/">company</a> by that name.</p>  
+    <p>-- Hilary Mark Nelson (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001U9">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>No way</i>
+</p><p> </p><p><i>con</i> has too many meanings, some unfortunate.  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>Tonight my friend Philip Greenspun and I discussed sprites after 
+dinner during dessert, 2 homemade hot fudge sundaes, and we don't think 
+sparklines are sprites. Weren't sprites a hardware feature of old 
+graphics cards intended to support moving elements in video games?  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Example of stock sparklines shown...</i>
+</p><p>I just noticed a sparkline in use!</p><p></p><p><a target="_blank" href="http://finance.yahoo.com/q/cq?d=v1&amp;s=C+AIG+GE+VIAb+PFE">http://finance.yahoo.com/q/cq?d=v1&amp;s=C+AIG+GE+VIAb+PFE</a></p><p></p><p>There are sparklines for each of the stocks quoted.  
+    </p><p>-- Corey Newport (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001Vw">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> ...and critiqued</i>
+</p><p>It's a shame about the black border in the Yahoo example above...</p><p></p><p>  
+    </p><p>-- Tchad (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001Vx">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>It is good to see some consequences, the use of sparklines in Yahoo financial presentations. </p><p></p><p>The
+ little boxes, however, look exactly like the bad designs shown at the 
+end of the chapter on page 18! (Note the red X on page 18.)</p><p></p><p>Just
+ make the boxes a light blue to indicate that they are clickable (blue 
+signals such elsewhere on the screen). Why should celebrating 
+"interactivity" corrupt and dominate content? Thoughtful design will 
+allow both the content and the linking bureaucracies to express 
+themselves appropriately, which is to maximize content and minimize 
+linking bureaucracies.  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Banking to 45 degree slope in sparklines</i>
+</p><p>The suggestion concerning scaling the representations to have 
+approximately a 45 degree angle of change as a cue to the velocity of 
+change suggests two ideas: </p><p></p><p>  First, that is the point at 
+which the sine function is at its greatest rate of change, providing 
+some small justification for that suggestion;  the eye is more able to 
+detect the pattern of change, because the relative amount of change is 
+greatest at that point.  </p><p></p><p>  Second, sparklines seem to have
+ characteristics of both one and two dimensional shapes.  Although 
+fractals are no longer in vogue, applying those ideas might yield useful
+ techniques.  Thus, choosing a fractional dimension too small, that is, 
+too close to 1, might result in an display similar to the poor baseball 
+W/L sparkline, while a dimension too large could result in the poor 
+sunspot example.  This might help the representation of outliers as 
+well.   
+    </p><p>-- Joe Gawron (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001Yl">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparklines in text</i>
+</p><p> I thought I would also post a use of actual sparklines.  I found them useful in presenting 
+data from cognitive modeling exercises.  The following is an example of how I used 
+several sparklines to describe working memory usage against capacity for an Air Traffic 
+Manager implementing an air traffic restriction known as Miles-in-Trial (MIT).  This 
+initiative increases the minimum separation between aircraft.
+
+
+</p><p> <img src="EdwardTufte_files/et-wm.gif"> </p>  
+    <p>-- Estes<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparklines as a Windows TrueType Font</i>
+</p><p> 
+</p><p>Dear Prof. Tufte,</p>
+
+<p>we implemented both Barsparks and dichotomous Sparks as a Windows TrueType Font (TTF). Typing
+61023647679 gives you <img src="EdwardTufte_files/sparkfont_sample1_bars.gif" alt="Sparkfont: Bars" title="" border="0" height="9" width="41">,
+and +/++-+++-++++//+ produces <img src="EdwardTufte_files/sparkfont_sample2_dicho.gif" alt="Sparkfont: Dichotomous" border="0" height="9" width="49">.
+A TTF can be created easily, e. g. using graphical software like CorelDraw,
+and it can be printed even in very small sizes.</p>
+
+<p>Our font uses eleven characters ("." and the numbers 0 - 9) which differentiates in
+about .5 mm steps when using a 12 pt font size. For dichotomous Sparks we use "+"
+for upward whiskers (wins, in the baseball example), "-" for downward whiskers
+(losses) and "/" for ties.</p>
+
+<p>Download the font from <a target="_blank" href="http://www.bissantz.de/sparklines">http://www.bissantz.de/sparklines</a></p>
+
+<table style="border-collapse: collapse;" border="2" cellpadding="4">
+<tbody><tr><th valign="top">character</th><th valign="top">represents ... of the corresponding value</th></tr>
+<tr><td align="center">9</td><td>90 ... 100 % </td></tr>
+<tr><td align="center">8</td><td>80 ... &lt; 90 % </td></tr>
+<tr><td align="center">7</td><td>70 ... &lt; 80 %</td></tr>
+<tr><td align="center">6</td><td>60 ... &lt; 70 %</td></tr>
+<tr><td align="center">5</td><td>50 ... &lt; 60 %</td></tr>
+<tr><td align="center">4</td><td>40 ... &lt; 50 %</td></tr>
+<tr><td align="center">3</td><td>30 ... &lt; 40 %</td></tr>
+<tr><td align="center">2</td><td>20 ... &lt; 30 %</td></tr>
+<tr><td align="center">1</td><td>10 ... &lt; 20 %</td></tr>
+<tr><td align="center">0</td><td>&gt;0 ... &lt; 10 %</td></tr>
+<tr><td align="center">. and ,</td><td>0/no value</td></tr>
+</tbody></table>
+
+<p><a target="_blank" href="http://www.bissantz.de/sparklines/Screenshot_Bissantz_Sparkfont.jpg"><img src="EdwardTufte_files/Screenshot_Bissantz_Sparkfont_preview.jpg" alt="Preview: Screenshot of Bissantz Sparkfont in MS Word" title="" border="0" height="121" width="326"><br>The above text in a Word document using our Sparkfont</a></p>
+
+<p>Kind regards - Nicolas Bissantz</p>
+  
+    <p>-- Nicolas Bissantz (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001gT">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>Nicolas,
+Great idea. One thing, to expand on Niels' comment, is that the bar 
+spark currently only allows for positive values. However, there are many
+ instances where negative values are required and sometimes a mixture of
+ positive and negative. In effect then, this would require three sets - 
+all positive, all negative and a mixture. Is this relatively easy to do?
+ I would disagree a little with Niels though, in that as this font is 
+designed to be used just within text as one is writing, having accuracy 
+to four significant digits would seem unnecessary, as this isn't what is
+ designed to be shown with a bar spark.  
+    </p><p>-- Will Oswald (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001gY">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>Sacrifice a significant digit and make the first one + or -: 
+ctrl-+001, ctrl-+002, etc and ctrl--001, ctrl--002.... To use the full 
+ascender and descender height of the line you would have to set the 
+horizontal axis at something above the normal writing plane, sort of 
+your x-height for the font. If the eye can only extract two significant 
+digits, then use use another ctrl character on format. Use b for bar, p 
+for point: ctrl-b+01, ctrl-b+02; ctrl-p-01, ctrl-p-02....  
+    </p><p>-- Niels Olson (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001gZ">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>2004 Baltimore Orioles Run Differential Sparkline</i>
+</p><p> </p><p>
+Here's my shot at David Rosen's suggestion.  Below is a run differential
+ sparkline for the Baltimore Orioles 2004 season (data courtesy of 
+ESPN.com).
+
+</p><p>
+Same conventions apply, but instead of adding the thin line along the 
+middle to indicate home games, I added a gray shaded area that signifies
+ winning/losing within 5 runs (an arbitrary number), and homestands.  
+The little star indicates the All-Star Break, which for  the Orioles 
+occurred after 85 games.
+
+</p><p>
+Suggestions/critiques welcome.  —tec
+
+</p><p>
+(Note: The image is zoomed in at 400% to compensate for the low 
+resolution of computer screens... which should come as no surprise to 
+loyal readers of this forum!)
+
+</p><p>
+<img src="EdwardTufte_files/balDiffSpark.htm">  
+    </p><p>-- Thomas E. Cason (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001gg">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>MS Office add-in to create sparklines from Windows TrueType Fonts (TTF)</i>
+</p><p> 
+</p><p>Following our previous posting about our <a target="_blank" href="http://www.bissantz.de/sparklines/bissantz_sparkfont_10.html">first prototype</a> of a TrueType Font which can be used to enter
+	bar-style Sparklines in e. g. Word documents, we received quite some positive feedback
+	(thanks everyone!) and decided to carry on this idea.</p>
+	
+<p>Firstly, we refined the original font <img src="EdwardTufte_files/bsf_bars_fine.gif" alt="" border="0" height="12" width="69"> and created 100 characters so we can
+	now differentiate positive values in steps of 1&nbsp;%. Note that the difference is hard
+	to tell on the screen, but printouts are razor-sharp.</p>
+	
+<p>Secondly, we made up four additional fonts which have their zero line not on the bottom,
+	but somewhere in the middle or on top of the characters. This allows for positive and
+	negative values. Multiple fonts are needed to reflect different ratios between the
+	largest positive and the largest negative number. This way we can make sparks like
+	<img src="EdwardTufte_files/bsf_bars_100.gif" alt="" border="0" height="11" width="34"> with all negative values, sparks with high negative and relatively low positive
+	values <img src="EdwardTufte_files/bsf_bars_75.gif" alt="" border="0" height="15" width="52">, sparks whose (absolute)
+	negative and positive values are similar <img src="EdwardTufte_files/bsf_bars_50.gif" alt="" border="0" height="15" width="53">
+	and sparks with small negative and big positive values <img src="EdwardTufte_files/bsf_bars_25.gif" alt="" border="0" height="15" width="64">.</p>
+	
+<p>Thirdly, we included the dichotomous sparks for indicating wins, losses and ties, for
+	example <img src="EdwardTufte_files/bsf_bars_dicho.gif" alt="" height="15" width="70"> in soccer, tennis or baseballs matches.
+	
+</p><p>And finally, we tried to construct lines <img src="EdwardTufte_files/bsf_line_dots.gif" alt="" border="0" height="12" width="94"> from
+	specifically crafted characters that represent line segments. From the data set we
+	want to visualize, we derive a grid of, say, 20 groups. Each data point in the set
+	is assigned to one of the 20 groups, and each group is graphically represented as
+	a dot. It is then possible to draw all the connections between any two points.
+	These line segments can be combined and result in a line-style Sparkline, with
+	 or without <img src="EdwardTufte_files/bsf_line_wo_dots.gif" alt="" border="0" height="10" width="55"> the points.</p>
+	
+<p>Since we now employ several hundred characters from our "Sparkfonts", we
+	programmed "SparkMaker", a small add-in for Microsoft Office products.
+	This tool is used to enter the data. It will calculate which fonts and which
+	characters have to be used to get the matching Sparkline, and it will insert the
+	ready-formatted Sparkline into your Word, Excel or PowerPoint document.</p>
+
+<p>To evaluate, you can download the SparkMaker tool and the fonts from our web site:<br><a target="_blank" href="http://www.bissantz.de/sparklines">http://www.bissantz.de/sparklines</a></p>
+
+<p><a target="_blank" href="http://www.bissantz.de/sparklines/Bissantz_SparkMaker_Screenshot.jpg"><img src="EdwardTufte_files/Bissantz_Sparkmaker_Screenshot_Preview.jpg" alt="" border="0" height="220" width="424"></a><br>
+<a target="_blank" href="http://www.bissantz.de/sparklines/Bissantz_SparkMaker_Screenshot.jpg">Screenshot of SparkMaker in MS Word 2003</a>
+</p>
+
+<p>Kind regards - Nicolas Bissantz</p>
+  
+    <p>-- Nicolas Bissantz (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001io">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparklines in Formula 1 racing </i>
+</p><p> This is very nice.  I can't remember how I wound up reaching it,
+but I'm glad I did!  Thanks, and I'm looking forward to the new book.
+</p><p>
+It gave me the idea to try something I wanted to see.  In Formula
+1 racing it is always said that your biggest rival is your teammate
+(because he's the only one with the same car). Sometimes they show
+stats in tables so that you can see teammates compared, but I don't
+remember seeing a graph.  So I tried to come up with something
+to see what could be seen.  My first try is the following.
+This shows the results for four pairs of teammates in the 1996 season:<br>
+<img src="EdwardTufte_files/sparklinef196.png">
+<br>
+The drivers' names are on the left.  The gray bars are drawn to the
+side of the driver that qualified ahead of his teammate and they are
+all proportional to the difference in time using the same scale.
+I think I was lucky in that, because probably there are times when
+the result would be way out of proportion, and I don't know what
+to do to handle that.  Maybe just adjust everything to a maximum
+like 1 or 2 seconds?
+</p><p>
+The vertical lines on each side show when the driver finished and was
+officially classified; the longer the line, the higher they finished.
+If there is no line then the driver did not finish.  Since teammates often
+finish very close to each other it was necessary to add color (green) to the
+line for the highest-finishing driver; otherwise
+it might not be easy to tell who finished ahead of whom.  I
+sort of like having the color only when both finished, for some reason.
+</p><p>
+To show points scored in each race, I added horizontal red bars at the end
+of each line. The width is proportional to the number of points scored.
+When you get a win, the bar is the full width of the race in the graph,
+so win streaks show up as solid bars (see Hill at the start of the season).
+The end of the graph shows the season total of points for each driver.
+</p><p>
+So, these little graphs give
+</p><ul>
+<li>Who qualified ahead and by relatively how much in each race.
+</li><li>Finishes and non-finishes in each race.
+</li><li>Who finished ahead in each race, if both finished.
+</li><li>Generally how many points earned in each race.
+</li><li>Roughly how high up the driver(s) finished in each race.
+</li><li>Wins and win streaks.
+</li><li>Total season points.
+</li></ul>
+<p>
+I was originally thinking about setting up a whole career in a line.
+I do like the results so far, and I wonder if there are ways to improve them.
+If I can get more data (I only have one old Autocourse book for 1996) then I could show
+a whole career across one screen.  I was thinking that the driver in question
+would be on top, and a colored line down the center of the x axis could match
+up with a key to his teammates.  Each color would show a different teammate (and
+maybe team) for a certain time period.    
+    </p><p>-- Christopher B Hamlin (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001iq">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparkline vs. Bar Chart</i>
+</p><p>An interesting comparison of a sparkline and a traditional bar chart at</p><p></p><p><a target="_blank" href="http://intepid.com/2004-12-06/23.32/">http://intepid.com/2004-12-06/23.32/</a>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>SparkTicker: an interactive ticker with sparklines for business data</i>
+</p><p> 
+</p><p>Reflecting on how to increase information density on computer screens, we've been
+	investigating the combination of a moving ticker with sparklines. In our implementation,
+	data can come from Excel, OLAP cubes, relational databases or realtime from web sources.
+	The example shows Dow Jones quotes from 2005-02-16 to 2005-04-15.</p>
+
+<table style="background: url('http://www.bissantz.de/sparklines/marquee-background.gif');" border="0" cellpadding="0" cellspacing="0" width="583">
+	<tbody><tr><td style="font-size: 11px; color: #ffffff; font-family: Tahoma, Arial, sans-serif; padding-left: 8px;" height="24" width="583"><strong>SparkTicker</strong></td></tr>
+	<tr><td height="33" width="583"><div style="width: 575px;"><marquee id="sparktickersim" behavior="scroll" align="top" direction="left" loop="" scrollamount="1" scrolldelay="5" style="position: relative; left: 5px;" height="23" hspace="0" vspace="0" width="575"><img src="EdwardTufte_files/sparkticker-dj-demo.png" alt="SparkTicker" border="0"></marquee></div></td></tr>
+</tbody></table>
+
+<p>In the desktop version, we have made the ticker interactive, allowing users to access
+	more detailed data through semantic zooming. Three zoom sizes award more screen real
+	estate with more information (iMail = incoming emails).</p>
+
+<p><img src="EdwardTufte_files/zoomsizes.png" alt="Sparklines in three zoomsizes" border="0" height="144" width="494"></p>
+
+<p>A magnifying glass eases micro reading whenever necessary. Values are abbreviated following
+	a set of rules which eliminate superfluous details.</p>
+<p><img src="EdwardTufte_files/magglass.png" alt="Magnifying glass for sparklines" border="0" height="44" width="175"></p>	
+
+<p>For business data we have introduced new sparkline types: The magnitude of deviations is
+	shown as colored boxes on top or below the bars
+	<img src="EdwardTufte_files/dev_spark.gif" alt="Deviation Spark" border="0" height="20" width="82">.
+	Gaps differentiate this type from stacked bars.  In this other example
+	<img src="EdwardTufte_files/share-spark2.gif" alt="Share Spark" border="0" height="20" width="64">,
+	shares are represented by partially filled bars, whose overall height show the referred totals.
+	Double bars show comparisons, e. g. to previous year's values <img src="EdwardTufte_files/comparison-spark3.png" alt="Comparison Spark" border="0" height="17" width="95">.
+</p>
+
+<p><img src="EdwardTufte_files/sparkline-on-mobile.png" alt="Sparkline on a cell phone" style="float: left;">Due to differing
+	communication standards, another challenging issue for sparklines are cell phones.
+	In order to get some feedback, we send current results of German premier league soccer every Sunday
+	to the phones of a few dozen sports fanatics.</p>
+
+
+<p>If somebody wants to test the Sparkticker or the cell phone sparklines, please give us a note or refer to <a target="_blank" href="http://www.bissantz.de/sparklines">http://www.bissantz.de/sparklines</a>.</p>
+  
+    <p>-- Nicolas Bissantz (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001o8">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</font></td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Javascript sparkline generator</i>
+</p><p> I've generated a javascript library for generating sparklines using SVG, a open vector format 
+supported by the W3C.  
+
+See <a target="_blank" href="http://overstimulate.com/projects/svg/">Javascript SVG Sparklines</a>  
+    </p><p>-- Jesse Andrews (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001ol">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparkline-like city horizons</i>
+</p><p>The remarkable Jason Kottke has pointed out this sweet 
+sparkline-like image by Jeff Gray:</p><p></p><p><a target="_blank" href="http://www.flickr.com/photos/jeffgray/15536148/">http://www.flickr.com/photos/jeffgray/15536148/</a>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>The author of the short animation can be found at <a target="_blank" href="http://www.hellofranck.com/">http://www.hellofranck.com/</a></p><p></p><p>There is little information about the author but he (or she) is either danish or norwegian
+  
+    </p><p>-- Andrew Nicholls (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001rs">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparklines for financial data</i>
+</p><p> 
+
+Here is my interpretation of sparklines in a product I am working on - 
+</p><p><img src="EdwardTufte_files/sparklines.htm"></p>
+<p>I finally settled on vertical bars as the indicator of highs and lows because 
+  it is difficult to get a dot to stand out at normal screen resolutions and if 
+  you make the dots too big they drown out the sparkline. It also highlights stocks 
+  that have multiple highs and lows (eg ARG and RIO) By placing the open and close 
+  prices aligned with the ends of the sparkline eliminated the need for other 
+  coloured dots and also gets around the problem of what happens when the high/low 
+  is also the open/close.</p>
+<p>The data are Australian Stock Exchange stocks for the last twelve months.</p>
+
+  
+    <p>-- Andrew Nicholls (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001rt">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p> </p><p>Sparklines continue to gain notoriety.  See the <a target="_blank" href="http://www.xml.com/pub/a/2005/06/22/sparklines.html">recent article</a> at xml.com.  The link to the technorati site is interesting as well.</p>  
+    <p>-- Simon Shutter (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001t3">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>TiddlyWiki sparklines</i>
+</p><p>TiddlyWiki in it's latest version has a sparklines functionality: <a target="_blank" href="http://www.tiddlywiki.com/#Sparklines">http://www.tiddlywiki.com/#Sparklines</a>
+ .
+What is TiddlyWiki ? "an experimental MicroContent WikiWikiWeb built by 
+JeremyRuston. It's written in HTML, CSS and JavaScript to run on any 
+modern browser without needing any ServerSide logic. It allows anyone to
+ create personal SelfContained hypertext documents that can be posted to
+ any web server, sent by email or kept on a USB thumb drive to make a 
+WikiOnAStick."  
+    </p><p>-- Christian Hauck (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001ti">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Importance flags in sparklines</i>
+</p><p>In the opening example to the sparkline chapter, a gray band is used to signal normal 
+limits; thus when the sparkline peaks above or below the horizon of the gray band the 
+glucose is critically elevated or critically reduced. Yet the sparkline remains clearly visible 
+within the gray field.</p><p></p><p>This technique can be generalized in terms of "importance flags". Thus when something 
+interesting happens in part of a sparkline, the area of interest can be indicated by a yellow 
+or red field or by a change in the color of the sparkline. Similarly, normal or routine 
+readings can be indicated by a light green field over the sparkline or by making the 
+sparkline segment itself green. </p><p></p><p>In using importance flags, the color coding should be modest, just strong enough to send 
+the editorial or interpretative signal without masking or detracting from the usual reading 
+of unflagged sparklines. The idea is that the sparkline should sit optically on top of the 
+importance flags, or at least be clearly or even decisively visible through the flagging. We 
+don't want to turn sparklines into vulgar stoplight charts (with their vivid red-yellow-green attitude).</p><p></p><p>The design theory for making signal flags is found in Envisioning Information, chapter 3 
+on layering and separation, and in Visual Explanations, chapter 4 on the smallest effective 
+difference.</p><p></p><p>Implementations anyone?  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Combining sparklines with quartile plots</i>
+</p><p> First or all, thanks to Tchad for the suggestion on where to 
+post the images. I wanted to get some feedback on an idea for combining 
+the ideas of a quartile plot (distribution in the same chart across 
+multiple instruments) with sparklines. In financial markets, for 
+example, the yield curve is observed as the maturity on the x-axis 
+versus the interest rate on the y-axis. A quartile plot will show some 
+information but frequently, one needs to be able also to put the 
+information in an historical context.</p><p></p><p>The most obvious way 
+in which to do this is by instead replacing the quartile plot with a 
+sparkline. This preserves the relative interest rate at each maturity 
+point while also giving more historical context. This can be shown 
+either with or without the min max, as in the two examples below.</p><p></p><p><img src="EdwardTufte_files/43747598_ca41960163.jpg"></p><p></p><p><img src="EdwardTufte_files/43747597_e0ca80f6cf.jpg"></p><p></p><p>Anyone
+ have any comments and any suggestions for improvements (and apologies 
+for the poor resolution of the images)? As always, this has been done in
+ Excel and is easy to implement.  
+    </p><p>-- Will Oswald (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001zL">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>The aspect ratio of these displays should be adjusted so that the absolute average of the 
+slopes up and down is 45 degrees. That is the time-series should look lumpy, rather than 
+spiky. See the material on aspect ratios near the end of the chapter posted above.  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>Thoughts on bivariate time-series:  We often plot parallel time 
+series (in Will's case above do we have essentially 5 pairs?), with time
+ on the x-axis and response on the y-axis.  Why not plot, as Will 
+mentioned earlier, interest rate against yield for all the time points? 
+ Then the interest-rate/yield relationship can be shown to shift as a 
+function of time.  One of ET's books (I forget which one --- my copies 
+have yet to be unpacked after the move) shows a number of plots of, I 
+think, inflation and unemployment rate and how that relationship changes
+ over time.</p><p></p><p>For Will's data, I envision 5 small multiples 
+that show paths through the rate-by-yield space over time.  The current 
+point can be highlighted, the minima and maxima can be shown and 
+annotated on the axes, and temporal proximity to the present can be 
+shown via shading (more recent data are more pronounced, older data are 
+faded). "Same time last year" and "last month" or whenever, can be shown
+ by a special symbol, perhaps an "M" for month or a "1" or "2" or 
+whatever for 1 year ago and 2 years ago and so on.</p><p></p><p>If time 
+IS the fundamental causal variable, then I'm not sure the dashed lines 
+connecting the starting and ending points really add anything, except 
+that the start points are growing faster (left to right) than are the 
+endpoints, as shown by the diverging lines, although I'm not sure that 
+comparison is of any value.  I guess I like the min and max values but 
+not the connecting lines.     </p><p></p><p>Although my training is in 
+time series, I always find the traditional time series plots 
+academically unfulfilling, since, following the "the data display is the
+ model" idea, they imply that the only thing driving the variability is 
+time.  They seem more like reports of what has happened than tools for 
+understanding the sources of variability in the data.  I find it more 
+enlightening to plot y against x and let time snake the path around the 
+x,y plane.</p><p></p><p>Let us all be cautious that the sparkline 
+concept ("intense, simple, word-like graphics") doesn't get morphed into
+ just "tiny time series plots".  It seems to me that the goal, with all 
+our displays, ought to be getting as much data in front of the viewers' 
+eyes as is feasible and to facilitate the comparison(s) of interest.  
+Whether the plot is a time series or empirical cumulative distribution 
+function or scatter-plot or whatever, taking advantage of 
+high-resolution display media and small pictures right in the text is in
+ the best interest of large rates of information transfer.  Galileo's 
+drawings of the shape of Saturn are certainly not time series.  </p><p></p><p>Perhaps
+ this is an open call for more "intense, simple, word-like graphics" 
+that are NOT time series.  &lt;sound of the gauntlet dropping&gt;</p><p></p><p>  
+    </p><p>-- Rafe Donahue (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001zN">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p> Is this an improvement? The data being shown is South African 
+interest rates, which have had periods where they have exhibited very 
+significant spikes.</p><p></p><p><img src="EdwardTufte_files/43785080_eeb410d440_o.jpg"></p><p></p><p>The
+ problem with determining the average slope is that, in many instances, 
+the data does not change significantly from one day to the next but 
+there are occasional spikes, so the average slope can still be 45 
+degrees.  
+    </p><p>-- Will Oswald (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001zO">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>In the context of interest rate markets, the connect-the-dot 
+lines are very important, as this determines the interest rate one earns
+ for investing for different periods of time. For example, investing 
+over a 3Y period earns 7.55% per year but investing for 5Y earns 7.88%. 
+The underlying tenor (1 to 5Y) does not vary but the amount being earned
+ on each and the relationship between them does change. One of the most 
+frequent questions asked within financial markets is how has each 
+individual rate changed over time and how has the relationship between 
+these rates changed over time. This is frequently plotted as a bivariate
+ relationship, showing the yield on what instrument versus the yield 
+differential between that instrument and another point on the curve. 
+However, this makes it virtually impossible to discriminate sufficiently
+ both between many points of the curve and also variability through 
+time. Small multiples could be used but this would need to be more than 5
+ small multiples (showing every combination would generate 10 charts). 
+This also would miss valuable information contained in the current 
+overall yield curve shape, which must be plotted as tenor versus 
+interest rate.</p><p></p><p>My overall intention though was to extend on
+ the usual quartile plot (min, 25%, median, 75%, max) across multiple 
+instruments which actually contains relatively little information (not 
+withstanding the cleaner version on page 125 of VDQI), while also giving
+ information about the current yield curve shape. A potential addition 
+could also be to highlight a particular intermediate yield curve shape, 
+as chosen by the user, in order to illustrate how the curve shape has 
+changed.  
+    </p><p>-- Will Oswald (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001zP">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>Will,</p><p></p><p>Regarding the aspect ratio and average slope issues: it seems to me that the problem is 
+that you have two trends that compete in trying to bank the data to 45 degrees. There is a 
+low frequency baseline and there are higher frequency movements on top of that. This is 
+similar to the monthly CO2 measurements from the Mauna Loa observatory discussed in 
+William Cleveland's Visualizing Data. ET seems to want the high frequency component 
+banked to 45 while the plot that I see seems to emphasize the baseline trend (roughly). </p><p></p><p>To offset this effect, you might try to fit the data to a linear baseline, subtract that, then 
+bank the data, and, finally, add the baseline back in. The more sophisticated solution, 
+given again by Cleveland, is to fit the data with lowess, smoothing over a large number of 
+data points (alpha ~ 1, lambda=1); subtract this trend, bank the data, and add the smooth 
+trend back in (or plot the baseline and high frequency separately, but I don't think this will 
+work for your application). </p><p></p><p>Whether to  bank the baseline trend or the high frequency ``spikes'' is a matter of 
+judgement. As always the proper visualization technique is very contextual to the data and 
+cognitive task at hand. So, I thnk ET's advice "lumpy not spiky" is a bit glib. For the 
+sunspot data, yes. But the Mauna Loa CO2 data teaches another lesson -- different trends 
+in the data can compete for the optimal aspect ratio leaving both suboptimal. </p><p></p><p>So I will end my answer where I probably should have started it, with a question. Which 
+component of the data do you want to emphasize, the high frequency component, the 
+baseline trend, or both? To emphasize the baseline, fit the data to a smooth trend, bank 
+that, and add the high frequency component back. To emphasize the high frequency 
+component, bank it, not the baseline, after smoothing, and again merge the results. 
+Finally, to emphasize both, bank each and plot them separately. IMHO.  
+    </p><p>-- Sean Garrett-Roe (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001zQ">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>Try the aspect-ratio fix.</p><p></p><p>For sparklines, the idea is to maintain the wordlike quality: the resolution of words, and 
+the ability to fit into sentences as wordlike elements, into tables as table entries, into 
+spreadsheets as cell entries.   
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparkline-like graphics for NASA Ozone Hole Watch</i>
+</p><p> </p><p>We're almost ready to publish a new NASA site detailing the progress of the Antarctic 
+Ozone Hole:</p>
+
+<blockquote>
+<a target="_blank" href="http://ozonewatch.gsfc.nasa.gov/">ozonewatch.gsfc.nasa.gov</a>
+</blockquote>
+
+<p>Sparklines (well, sparkline inspired-graphs, they're larger than words) show year-to-
+date maximum size, minimum ozone values, and temperature; in context with (smoothed) 
+historical minimums and maximums. Red dots (maximum signal flags) indicate maximum 
+ozone loss (largest area or lowest total ozone) for the year. Mini bar graphs show the 
+changes since satellite measurements began in 1979. Small multiples make an appearance 
+with globes depicting ozone over the past week (unfortunately the scientists involved were 
+unwilling to change the color scale).</p>
+
+<p>The data is processed in IDL, rendered at high resolution (10 times screen size) and 
+resampled to remove aliasing.</p>  
+    <p>-- Robert Simmon (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0001zd">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Web sparkline generator</i>
+</p><p> I've been experimenting with generating sparklines for the web, 
+and have a client-side solution (images are completely generated in the 
+web browser rather than the server) in proof-of-concept stage.  See it 
+at <a target="_blank" href="http://www.davidflanagan.com/blog/2005_10.html#000087">my blog</a>
+</p><p>
+Here's an example of an image it generates.  This is encoded as a data: 
+URL, so it won't appear if you're using Internet Explorer.
+
+<img src="data:image/png,%89PNG%0D%0A%1A%0A%00%00%00%0DIHDR%00%00%00_%00%00%00%14%08%02%00%00%00d%B1v%0D%00%00%01nIDATx%DA%ED%98%21o%83%40%14%C7%9F%40%E0%8A%24%A9k%96f%DF%A7f%A9%E2%23%F0-*%10s%B5%B3%15%15M%10%08tm%C5*%2F%15%D54Y%CDB%96%09%F6%EF.%23%17%06%0C%5E%81%D2q%2F%2F%97%0B%F0%BF%DC%FF%F7%1E%04%A0DGq%D0%BD%1B%10B8%8ECD%181oVu%AFt%C20%A4%9F%80%C3%20%080%9A%A6Y%EE%B6%AE%8A%1A%D9hg%AATkY%96%EF%FBE%1D%91%FAW%3DWT%BD%8E%C7%09Q%B2%DF7%40%07Kc%C5%28%8A%3AP%95%9B%CC%F5l%18%86%BC%B2%BA%EA%82%86%E8c%BBm%80%8E%A4%EEy%5E%07%AA%EA%263%D7%BB%AE%5BC%25%C4%FB7%9A%0B%9D%F39a%E7n%27p%D3.%97%2F%93%C9%C3%E9%F4%D9%AA%0A%B9%D9%84%A3%91%B5Z%F9%B56%09%15*QW%25%F3*%3A%F3%B9%83%C4d%3A%7D%C4%26ZU%F1%D0%C8%3C%1E%DFx%06%F9tdM%D0%08%98%2F%16%CF%B3%D9S%95%AE%01%17%9E%0AO%10%1E%9Ak%92%D8h%D4J%1E%0E%11%3C%C3%C3z%1DH%FF%18%25%02%D5%21n%28%F58O%D5S%3Ai%E5ed*%99%9EU%DD%AA%91%EB%90%A7%EA%17%9D%9B%D7%B0wt2%9D24.%85t%06%DB%299t%7E%BF_%FE%F9%B52%B8ot%CD%25%9F%8E%E6RF%C7%B6m%CD%A5%90N%1C%C7%9A%C2%BF%FD7%D8j%7C%01%1C%D5a%B6y%B3%D6%86%00%00%00%00IEND%AEB%60%82" align="middle" vspace="2">
+
+</p><p>
+I would be interested some guidance: should I antialias the sparkline, 
+or leave it jaggy?  The one above is antialiased, which blurs the data a
+ bit.  But at this size, the antialias blur seems no worse than the 
+pixelization artifacts that antialising obscures...  
+    </p><p>-- David Flanagan (<a href="http://www.edwardtufte.com/tufte/email?msg_id=00020v">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Fractal/sparkline analogy?</i>
+</p><p> Sparklines resemble fractals, in the sense that the form and 
+visual texture of sparklines remain the same as the resolution scale 
+changes. This is seen in the zoom-sketch of the data (63 months, 12 
+months) for euro exchange rates in the second table and, particularly, 
+in the illustration about half-way down page 8 in the essay at the top 
+of the thread.
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/000210-2317.jpg" border="0" height="78" width="500"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+The resolution of time-fractals of sparklines can exist in the data-base
+ underlying the sparkline, as viewers zoom through years, months, days, 
+hours, minutes, seconds, and so on. For data analysis, contextual zooms 
+are preferred, as shown in the zoom on page 8. 
+Contextual zooms enforce the micro-macro comparisons resulting from 
+sparkline scale changes, and avoid the where-am-I-now effect of 
+uncontextual zooms that erase the the previous scale version of the 
+sparkline, as too often seen in scale changes when moving in and out of 
+aerial photographs. In this scale shift, note the change in aspect 
+ratio, a matter worth thinking about since the aspect ratio should be 
+data-driven to some extent:
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/000210-2318.jpg" border="0" height="103" width="252"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+Contextual zooming might be reported as in the big euro conversion table
+ on page 8: a sequence of sparkline table entries at various 
+time-scales. 
+</p><p>
+I hope a Kindly Contributor with a high-resolution database (years, 
+months, week, days, hours, seconds . . .) can construct a good example 
+moving through many orders of magnitude, perhaps following the 
+architecture of the page 8 sketch. There is something of a Powers-of-Ten
+ metaphor here as well, although the fractal metaphor still holds as 
+each new image in the sequence remains a sparkline. This requires a big 
+database underlying the time-series as required by the changing 
+resolutions. 
+</p><p>
+Perhaps the fractal metaphor can mobilize some of the many elegant 
+computer programs for displaying fractals, but now using great piles of 
+empirical data rather than geometric modeling as the basis for depicting
+ and driving images based on scale changes. Such evidence-based fractals
+ would greatly extend the power of sparklines.
+</p><p>
+Regardless of the metaphor, contextual scale zooms are exactly what 
+sparklines are good at: displaying intense amounts of data, now 
+in-depth, not just as one fixed time-scale sitting there in still 
+flatland. Of course, some dynamics can be added to each sparkline at 
+each resolution as new data flows in, possibily in real-time.
+</p><p>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Are sparklines nouns, verbs, equations?</i>
+</p><p>John Morse (this forum, July 7, 2004), wrote his concerns about placing sparklines in text.  
+Indeed, this seems to be something worthwhile ponder (e.g., is a sparkline a noun or a 
+verb?).</p><p></p><p>It seems odd to me that sparklines have not yet been compared to equations in this forum.  
+Equations have a very high information density, and they occur both within text and as 
+separate, often numbered, items.  Once this connection is made, the grammar for 
+sparklines becomes a bit more clear.</p><p></p><p>For example, I might talk about a how increasing a factor increases a metric of the system 
+I am studying, *sparkline showing increase*, which is contrasted with the reduction of that 
+factor, *sparkline showing decrease*.  If the sparklines show timeseries, I will immediately 
+see if the response of the system is liner, exponential, or step-like.  Clearly, if the 
+response were governed by different equations, I could equally well put the equations in 
+place of the sparklines.</p><p></p><p>Sparklines could also be placed within the text as numbered equations are.  This way, they 
+could also be referred to later in the text as numbers.  This would create an intermediate 
+object between sparklines placed in the text, and a separate table or figure.  
+    </p><p>-- Rob Hetland (<a href="http://www.edwardtufte.com/tufte/email?msg_id=00022K">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>SAS macro for sparklines</i>
+</p><p>Hello to Professor Tufte and All,
+I have been following Professor Tufte's work since he first came to my 
+attention about a year ago. I really like the simplicity and power of 
+sparklines. Since I am a statistician, I use SAS in my daily work. So, I
+ thought it would be useful to find a way to make sparklines in SAS from
+ a SAS data set since there are many other statisticians out there using
+ SAS. The more formats that the creation of sparklines are offered in, 
+the more accepted they will become.</p><p></p><p>I have put together a 
+SAS macro for PC SAS that allows the user to create sparklines by using a
+ SAS data set with the data points arranged in one of the columns. The 
+macro allows the user to select the trend or bar type of sparkline. 
+Although I have been programming in SAS for over 8 years, I am not an 
+expert in SAS/GRAPH, so any recommendations for improvements to the 
+macro would be appreciated. Currently the user is restricted to 11 
+characters for the descriptive word that appears to the right of the 
+sparkline. The output appears in the SAS graph output Window. My 
+recommendation is to right-click on the output, choose File&gt;Export As
+ Image... and save the output as an image. I have been having good luck 
+with PNG files. You will notice that the font appears rather large, as 
+does the red dot representing the current value, but this is necessary 
+so that when the file is reduced and put into a document, it looks 
+right. Unfortunately there is one additional manual step: you need to 
+open the PNG (or other picture format) file and cut out just the narrow 
+sparkline portion to insert in a document.</p><p></p><p>Examples and the SAS code can be found at <a target="_blank" href="http://home.mchsi.com/%7Emarchendel/sparklines.html">http://home.mchsi.com/~marchendel/sparklines.html</a>.  
+    </p><p>-- Marc Hendel (<a href="http://www.edwardtufte.com/tufte/email?msg_id=00022b">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Biblical Sparklines</i>
+</p><p> </p><p>The next version of the Logos Bible Software app uses 
+sparklines to show the relative density of a root word across the 
+biblical books. Students of the Bible are interested in which biblical 
+authors use which words with what frequency; displaying this information
+ via sparklines makes it digestable at a glance.</p>
+<center><a target="_blank" href="http://blog.logos.com/archives/2005/12/sometimes_its_t.html"><img src="EdwardTufte_files/sparklines01b.png" border="0"></a></center>
+<p>We've also made it possible to interact with the graph by hovering 
+the mouse pointer or clicking, which keeps the graph very clean and 
+simple.</p>
+<p>I just posted details about the Lemma Density Graph to the <a target="_blank" href="http://blog.logos.com/archives/2005/12/sometimes_its_t.html">Logos Blog</a>.</p>  
+    <p>-- Daniel Foster (<a href="http://www.edwardtufte.com/tufte/email?msg_id=00023v">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>This is very good. </p><p></p><p>Might the bars be slightly thinner to pick up more data? Can this method be generalized to 
+other concordances and to dictionaries?  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p> </p><p>Thanks! I was delighted to receive a personal response. 
+To continue the conversation a little, this is the response of Eli 
+Evans, one of our "Information Architects" who helped design the Lemma 
+Density Graph...</p>
+
+<blockquote>He asks if the bars could be thinner. They could, but it's a
+ usability issue. When I was doing the mockup for this I found that if 
+the bars got much thinner than they are right now, there was a real 
+difficulty in getting the mouse pointer over the bar you wanted. In my 
+experience, people aren't accurate with a mouse to within more than 
+about 4 pixels. Besides, that's just about how fat the little finger is 
+on the end of the hyperlink hand pointer! BTW, yes, this display can be 
+adapted to just about any corpus.</blockquote>
+
+<p>When working with the graph I would have to agree that the thickness 
+of the bars is about the practical minimum. The user has to be able to 
+pause the pointer over the desired bar for the tooltip pop-up to appear.</p>
+
+<p>One nice touch that didn't get demonstrated in the previous 
+screenshot is a yellow highlight that follows the mouse pointer and 
+helps indicate which bar it's over.</p>
+
+<center><img src="EdwardTufte_files/sparklines03.png"></center>  
+    <p>-- Daniel Foster (<a href="http://www.edwardtufte.com/tufte/email?msg_id=000246">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>Use a broader yellow cursor-location-indicator show up centered 
+over a narrower whisker of data. Or use a triangle pointer to the 
+narrowed whisker. Or have the whisker light up when it is cursored over.
+ Or use a lens cursor. Or 10 other possibilities. Also you are giving up
+ resolution for interaction, often a poor tradeoff showing statistical 
+graphics on the computer. The resolution of computer screens for 
+sparklines is already compromised compared to paper, so don't give into 
+mouse factors usability, but instead design your way out of the problem.
+ </p><p></p><p>For lots of practical examples along with the theory, see chapters 2 and 3 of Envisioning Information. </p><p></p><p>Designers
+ tend to reduce content resolution, particularly the resolution of 
+statistical graphics. For evidence and the reasons why, see chapters 3 
+and 5 of The Visual Display of Quantitative Information. </p><p></p><p>Those
+ who care about content should insist on high-resolution design 
+solutions. The attitude of the content people toward design should be 
+"Don't tell me why you can't do something; instead figure out a design 
+solution that is worthy of the content and the analytical issues in 
+reasoning about the content."</p><p></p><p></p><p></p><p>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p> Daniel,
+
+</p><p>regarding ET's advise to ". . . just have a broader yellow 
+cursor-location-indicator show up centered over a narrower whisker of 
+data . . . ." See the <a target="_blank" href="http://www.flickr.com/tools/organizr.gne">Flickr Organizr</a> for an example of graphic web content made larger on mouse-over.  
+    </p><p>-- Niels Olson (<a href="http://www.edwardtufte.com/tufte/email?msg_id=00024A">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparklines in text: cozy example</i>
+</p><p> 
+
+</p><p my="" <a="" target="_blank" href="http://rafe.donahue.home.comcast.net/sparklinesintext01.pdf">little vignette concerning the distribution of student ages in the piano class is here.
+
+  
+    </p><p>-- rafe donahue (<a href="http://www.edwardtufte.com/tufte/email?msg_id=00024h">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>EEGs from the Hive Mind - Google Zeitgeist 2005</i>
+</p><p><a target="_blank" href="http://www.google.com/press/zeitgeist2005/worldaffairs.html">http://www.google.com/press/zeitgeist2005/worldaffairs.html</a></p><p></p><p>Nice
+ abstract of the vast database they must have built up to track what 
+folk are interested in. Small multiple graphs, quite good design, 
+showing daily(?) search frequencies for specific terms over the calendar
+ year ("Tsunami" goes back to December 2004).</p><p></p><p>Weekly cycle 
+is clearly visible, plus super-spikes e.g. "London" on 7 July and again 
+on the 21st - the days of the bombings. Unfortunately y axis not 
+labelled but some graphs show multiple series allowing comparison e.g. 
+the public's volatile preferences for Britney, Shakira and Mariah.</p><p></p><p>Also
+ interesting to compare shapes e.g. natural disasters seem to have a 
+sharp attack and a long decay but celebrities have narrow symmetrical 
+spikes.
+  
+    </p><p>-- Brian Davies (<a href="http://www.edwardtufte.com/tufte/email?msg_id=00025A">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Excellent sparkline-like graphics from Robert Sedgewick, Algorithms in C (1998)</i>
+</p><p> </p><p>
+Sparklines and sparkline-like graphs can also move within complex 
+multivariate spaces, as in these 9-step sequential results (reading down
+ the columns) in merge-sorting 5 different types of input files. Four 
+variables and 18,000 numbers are depicted in these small multiples.
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/00027o-2539.jpg" border="0" height="532" width="413"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+Here are the results of 7 sequential passes to sort a 200 element file in bottom-up merge sort:
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/00027o-2540.jpg" border="0" height="215" width="433"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+These merge-sort images above are a bit large in order to accommodate 
+the resolution of a computer screen. But this material can achieve 
+sparkline-resolutions when printed out on paper. 
+  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Red/green distinctions in data displays</i>
+</p><p> </p><p>It was Nick Van Valkenburgh who referred to red-green 
+colour blindness (on 6th March 2005). This is almost an insoluble 
+problem once one decides to use colour at all, because people who can 
+see red without difficulty tend to find it an excellent colour for 
+having anything stand out from the rest, and such people are not only 
+the large majority (much more than 90% I suspect: see below) but they 
+also find it hard to imagine the difficulties that those in the minority
+ have. One thing to remember is that in many contexts grey-scales work 
+much better than colour-coding anyway, as our brains have built-in ways 
+of ranking shades of grey that they don't have for different colours. 
+(ET discusses this in one of his books: I forget which one, but it's at 
+home, so I can't check.) Unfortunately I doubt if shades of grey are 
+sufficient to make distinctions in anything as small as a sparkline, but
+ one can experiment.
+
+</p><p>The figure of 10% of males (not of people, for which the 
+proportion is very unlikely to be more than 5%) is often quoted, but I 
+believe it is misleading. There are many people (myself, for example) 
+who would fail a test of red-green discrimination if they were applying 
+for training to be fighter pilots, but that is a very stringent 
+criterion and excludes a lot of people who by no means regard themselves
+ as colour-blind for everyday activities, and who have no difficulty in 
+seeing a red dot among a group of black ones. In any case, even if 
+red-green colour blindness is the commonest form it is not the only one,
+ and making things better for the red-green colour-blind may make them 
+worse for others.
+
+</p><p>As an anecdotal piece of evidence, about 25 years ago I was at a 
+meeting where one participant, fully red-green colour-blind himself, 
+complained at the use of red in early computer graphics for making 
+things stand out. He asserted that about 10% of males were colour-blind,
+ but although there were around 60 people present (mostly male) he was 
+the <em>only</em> one who had any problems.
+
+</p><p>Note that I am not saying that the problems are not real, or that
+ we should make no effort to prevent them from arising, only that I 
+believe that in practice they affect a lot fewer than 10% of people. 
+Even if they only affect 1% of people we should take them seriously. As 
+the user of a minority operating system (Macintosh), and user of a 
+browser (iCab) that is used by a small minority of that minority, I am 
+quite familiar with web sites that announce that they do not "support" 
+the browser that I choose to use. No matter how small the minority 
+affected adversely by a design decision we should always do our best to 
+cater for it.
+
+
+  
+    </p><p>-- Athel Cornish-Bowden (<a href="http://www.edwardtufte.com/tufte/email?msg_id=00028d">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Red/green and other special interests</i>
+</p><p>I liked ET's answer to the colorblindness issue at the end of the
+ Skeptics Society lecture (and I seem to recall this from the one-day 
+course): yielding design to one special interest group opens the 
+designer to demands from every special interest group, of which he 
+estimated there are about 20. Better to design well.</p><p></p><p>Personally,
+ I'm left-handed. Driving, cameras, guns (I'm in the military, this is a
+ serious problem), sissors, "ergonomic" mice, dining with someone else 
+next to me (elbows), assymetrically bevelled knives (mainly found in 
+kitchens), rulers, watches, hemostats (and I'm in medical school: watch 
+out!), and many other medical instruments, but most of all, writing.</p><p></p><p>I'd
+ like the English-speaking world to redesign the language to be read 
+bottom-to-top, right-to-left, because sometimes my pinkie and the side 
+of my palm pick up so much ink while writing that some of the letters, 
+sometimes whole words become illegible (like when I'm taking notes in a 
+one-day course with 300 other people). This happens more when it's warm 
+(like in a full lecture hall) because of perspiration and the ink 
+staying either soft or wet a bit longer, and I'm quite sure about ten 
+percent of people are lefties (estimates range between 2 to 30 percent 
+for either lefty or ambidexterous). So, alternatively, could we just 
+move the planet a bit further from the sun? Or at least reverse global 
+warming?  
+    </p><p>-- Niels Olson (<a href="http://www.edwardtufte.com/tufte/email?msg_id=00028e">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Excellent research on data displays, including sparklines</i>
+</p><p>Arrays of sparklines allow simultaneous multiple comparisons and clustering of sparklines 
+(and their accompanying nouns) into groups, as in the mutual fund example in my essay. 
+Here is a way to do such analysis more systematically,</p><p></p><p><a target="_blank" href="http://www.cs.ucr.edu/%7Eeamonn/SIGKDD_2004_vistree.pdf">http://www.cs.ucr.edu/~eamonn/SIGKDD_2004_vistree.pdf</a></p><p></p><p>a paper by  Jessica Lin, Eamonn J. Keogh, Stefano Lonardi, "Visualizing and discovering non-
+trivial patterns in large time series databases," Information Visualization 4(2): 61-82 (2005)  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>ET brief history of sparklines</i>
+</p><p>I gave a talk at Google last December and emphasized sparklines 
+by giving out a 4-
+page technical report on sparklines at the beginning of the talk and 
+then asking everyone to read it. After that, I worked my way through the
+ report. My goal was to alert them to the idea of sparklines and then 
+that they would envision all the wonderful possibilities (especially 
+given their excellent sense of analytical design). I gave somewhat 
+similar talks at Genentech and JPL on that trip.</p><p></p><p>Yahoo uses
+ sparklines for some financial data. The Google financial graphics are 
+competent but utterly conventional. (Maybe someone can post a sample 
+page and also post a redesign combining tables and sparklines, thereby 
+breaking free of  standalone graphics). A model for that might be the 
+exchange-rate example in the draft chapter posted at the beginning of 
+this thread.</p><p></p><p>One problem is that, at leading edge of really
+ high-resolution sparklines, we need paper's 
+resolution. Computer screens are OK but they don't operate at the 
+intense resolutions
+needed by sparklines at their best. Computer displays operate at about 
+10%-15% of the resolution of paper, a performance level that doesn't 
+matter that much for routine analysis but does matter for serious, 
+high-resolution visual data analysis.</p><p></p><p>I had hoped that the 
+New York Times in their revisions of the mutual fund and stock market 
+tables would take advantage of paper's resolution and build in the daily
+ sparkline histories for a year of each of the 800 or so mutual funds on
+ a single page of newspaper. (I sent an early draft of the sparklines 
+material to the paper's design director a couple of years ago.) The idea
+ is to exploit paper's comparative advantage, high resolution, over the 
+computer screen. That might be one way for newspapers to survive, for a 
+while, internet news. On a Times mutual-fund tables page, for example, 
+sparklines would put 400,000 additional prices and changes in prices on 
+each printed page of the market table, and make those tables just 
+sparkle. Readers would soon discover that there are not 800 different 
+funds on that page but probably only about 25 or 43 or something like 
+that, since many funds share roughly identical day-to-day price shifts 
+for a full year--as we saw in the top 10 mutual funds example in the 
+Beautiful Evidence chapter draft on sparklines presented at the 
+beginning of the thread. Mutual fund comparisons are more complicated 
+than that, but the daily year-long comparative price paths are a good 
+start.</p><p></p><p>My first sparkline sketches were made some 15 years 
+ago when I reviewed an HP medical interface for monitoring hospital 
+patients (which involved, I recall, a Unix box for every ICU patient, or
+ maybe a Unix box on a cart wheeled around the hospital). The idea was 
+to put sparklines on the margin of a big spreadsheet recording all 
+patient data (event by time), thereby summarizing  the time-series 
+history of each event category. My conclusion was that the medical staff
+ would rarely look at the original spreadsheet and would instead just 
+look down the column of sparklines showing the events time-series. And 
+then the original medical event spreadsheet could then be down-screen if
+ a user wanted details.  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Web monitoring with sparklines</i>
+</p><p>A neat little example of sparklines at this blog:</p><p></p><p><a target="_blank" href="http://since1968.com/article/130/sparks-updated-to-show-stats">http://since1968.com/article/130/sparks-updated-to-show-stats</a>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sub-pixel resolution for sparklines?</i>
+</p><p>David Flanagan asks above whether it's best to use anti-aliasing 
+or not, when implementing a sparkline for display on monitors, and 
+Professor Tufte frequently points out that monitors have poor resolution
+ compared to printers. </p><p></p><p>This prompts me to ask, has anyone 
+implemented sparklines for display on monitors that use so-called 
+sub-pixel resolution techniques?  This is the practice of improving the 
+appearance of fine lines or edges by taking advantage of the fact that a
+ colour "pixel" on a monitor is really three physically-separated 
+elements, each a different colour. Microsoft has used this technology in
+ its ClearType fonts, but I haven't heard of it being used for graphical
+ display purposes.   
+    </p><p>-- Derek Cotter (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0002Dy">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparkline-like historic beauties</i>
+</p><p> Here are a variety of sparkline-like drawings, some of them leftovers from my <i>Beautiful Evidence</i> files (that didn't make it into the published book).
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0002HH-2628.jpg" border="0" height="293" width="600"></td>
+      </tr>  
+    </tbody></table>
+<br><br>
+(From Sotheby's, <i>Livres et Manuscrits,</i> Paris, 30 May 2006), 86-88.
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0002HH-2629.jpg" border="0" height="566" width="600"></td>
+      </tr>  
+    </tbody></table>
+</p><p></p><p>
+Below, a double-page spread dropped from a nearly final draft of <i>Beautiful Evidence:</i></p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0002HH-2630.jpg" border="0" height="799" width="600"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0002HH-2631.jpg" border="0" height="945" width="600"></td>
+      </tr>  
+    </tbody></table>
+</p><p>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparkline-like elements from a 13th-century bible manuscript</i>
+</p><p> </p><p>Decorative tendrils running around this page from a 13th-century manuscript bible hint of sparklines. 
+</p><p>
+From Sotheby's London, <i>Western Manuscripts and Miniatures,</i> 6 July 2006, 33.
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0002JD-2705.jpg" border="0" height="1047" width="600"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparkline in InDesign</i>
+</p><p>For those who use InDesign, once installed on a Mac, the SparkFonts from Bissantz appear in 
+InDesign's font menu and individual characters can be selected via the Glyph window. It may 
+not as easy to use as Bissantz's Word tool, but it will work for occasional use until someone 
+creates a Sparkline tool specifically for InDesign.</p><p></p><p>--Mike Perry, Inkling Books, Seattle  
+    </p><p>-- Mike Perry (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0002Jt">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>New York Times sports sparkline</i>
+</p><p> </p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0002Ka-2801.jpg" border="0" height="567" width="800"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+<i>The New York Times</i> sports section on June 23, 2006 displayed a 
+sparkline-like graph showing the outcomes of the last 218 basketball 
+games of the New York Knicks. As our scale of measurement shows, the 
+graph is 12 in (30 cm); a real sparkline would be a little over 2 in (5 
+cm).
+</p><p>
+The graph is nicely integrated with surrounding text, numbers, and 
+images. The whiskers showing wins are too light compared to the whiskers
+ showing losses. The win-whisker blue-tint is also used as a background 
+tint immediately above, an unnecessary congruence. Wins might be shown 
+in red not pale blue. The instructions for reading the sparkline "Below,
+ each tick mark represents a victory or loss..." are not needed 
+especially since the two rows of ticks are labelled "victories" and 
+"losses". (Why not "wins" rather the "victories"? Perhaps because "wins"
+ is both a verb and a noun.) Those labels are not needed; every reader 
+of the sports page will know what the whiskers mean. After all the 
+reader is expected to understand these fancy words in the reports 
+accompanying the graph:&nbsp; &nbsp;
+<i>sycophantic &nbsp; &nbsp; &nbsp; &nbsp;  perpetuity &nbsp; &nbsp; 
+&nbsp; &nbsp;  passive-aggressive &nbsp; &nbsp; &nbsp; &nbsp;  tenure 
+&nbsp; &nbsp; &nbsp; &nbsp;  enigma &nbsp; &nbsp; &nbsp; &nbsp;  pariah 
+&nbsp; &nbsp; &nbsp; &nbsp; dysfunctional</i>
+</p><p>
+Both the column and the news story psychologize about the personalities 
+of those in the team bureaucracy rather than the performances of 
+basketball players and their competition, both of which might have 
+something to do with the team performance. Of course not every column or
+ news story need fully account for all the sources of variance, but 
+these stories seem a bit one-sided in their mode of analysis.</p><p>
+The graphic reporter is not credited for her or his good work, although 
+the columnist, reporter, and photographer are. Publicly acknowledged 
+creatorship signals responsibility for work and also often improves the 
+quality of work.
+</p><p>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>More on NYT sports sparkline</i>
+</p><p>The enormously talented and productive Jonathan Corum, who took my course in analytical design at Yale, 
+and who founded </p><p></p><p><a target="_blank" href="http://www.style.org/">http://www.style.org/</a></p><p></p><p><a target="_blank" href="http://www.13pt.com/">http://www.13pt.com/</a></p><p></p><p>and is now a graphics editor at The New York Times, writes in about what turns 
+out to be his basketball sparkline: </p><p></p><p>"Hello Professor Tufte, I can take credit (as well as any blame) for the Times 
+graphic.</p><p></p><p>I'm not sure that the whisker lines without labels would have been legible to all readers (an 
+early draft without labels at far left was not immediately recognized as showing wins and 
+losses by two in-house readers, prompting the more prominent labels in the final version). 
+But I do agree that the 'Below, each tick mark ...' instructions are redundant. They were 
+only included because they were unobtrusive, and in case any skeptical readers went 
+looking for clarification.</p><p></p><p>The word 'victories' instead of 'wins' is Times style, for the reason you mention, 
+and I didn't add my name to the graphic in part because the data it is based on was 
+readily available, and in part because the overall presentation seemed simple enough to 
+not merit a credit."</p><p></p><p></p><p></p><p>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Voting records</i>
+</p><p>Sparkline implementation of Voting Records:</p><p></p><p>The 
+usual method of detailing voting records is massive text tables 
+consisting of "Y N" votes. I've never been able to read these.</p><p></p><p>Is it possible to view voting records visually in a graphic literally word-size? Here are a few attempts:</p><p></p><p><a target="_blank" href="http://autosocratic.blogspot.com/2006/07/sparkline-implementation-of-voting.html">http://autosocratic.blogspot.com/2006/07/sparkline-implementation-of-voting.html</a></p><p></p><p>The
+ tragedy of the Washington Post site, which purports to list and 
+summarize the results of rational deliberation in a country founded on 
+reason, can be found at the bottom of this page.  Look at the available 
+summaries.  ASTROLOGICAL?</p><p></p><p><a target="_blank" href="http://projects.washingtonpost.com/congress/109/senate/2/votes/190/">http://projects.washingtonpost.com/congress/109/senate/2/votes/190/</a></p><p></p><p>  
+    </p><p>-- Mike Round (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0002LK">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p> The problem with congressional votes is that their content and relevance needs to be at 
+least briefly 
+described with some text accompanying the vote. <i>The Washington Post</i> bill 
+numbers 
+and vote descriptions are mysterious except to insiders; and sparkline histories also don't 
+catch 
+content and relevance. Perhaps a better way would be to identify the 20 most important 
+votes in 
+a session and then talk about the voting distributions.</p><p>There are all sorts of vote 
+ratings made by various political 
+groups that serve better than the <i>WP</i> list and sparklines. </p><p>I always enjoy 
+seeing 
+sparklines but this application should have more text describing each vote, or perhaps 
+different 
+binary categories. </p><p> The <i>WP</i> breakdown by astrological sign shows what 
+randomness can produce in the way of pseudo relationships, and so in its somewhat silly 
+and prankish way shows what vote distributions look like under the null hypothesis. That 
+might calm down the rage to conclude when studying other cross-tabs of votes. </p><p>
+
+There is a substantial literature in political science using multi-dimensional scaling to 
+coax some more complex and richer meanings out of voting records (House, Senate, 
+Supreme Court) compared to univariate marches through the votes. Although even here 
+remains a problem of separating out the key votes from the many trivial votes taken in the 
+House. There are probably ways to derive importance weights for votes. And also various 
+consent rules are used to mask votes; for example, there was no vote by name on the 
+House "pizza rule" on few years ago, where lobbyists could supply pizza to members of 
+Congress on the floor, or something like that.   
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Stacked sparklines from Science magazine</i>
+</p><p> An excellent use of graphics, including a 3D stack of sparklines:
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0002Sj-3347.jpg" border="0" height="784" width="375"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+Source: Thomas Taubner, Dmitriy Korobkin, Yaroslav Urzhumov, Gennady 
+Shvets, Rainer Hillenbrand, "Near-Field Microscopy Through a SiC 
+Superlens," <i>Science</i>, 313 (15 September 2006), p. 1595.
+</p><p>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Executive dashboard uses sparklines</i>
+</p><p>One of the winners of the "Business Intelligence Network 2006 Data Visualization 
+Competition" is very well done and uses sparklines:</p><p></p><p><a target="_blank" href="http://tinyurl.com/keqjw">http://tinyurl.com/keqjw</a> (from dashboardspy.wordpress.com)</p><p></p><p>- Dave</p><p></p><p>Ask ET thread on executive dashboards: <a target="_blank" href="http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0000bx">http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0000bx</a>  
+    </p><p>-- David Person (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0002St">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparklines in perspective</i>
+</p><p> An interesting possibility for stacked sparkline architectures 
+with information on the apparent surface beneath each sparkline. There's
+ the usual problem, however, that the horizons toward the front may mask
+ the horizons and surface toward the rear in real data:
+</p><p>
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0002UB-3430.jpg" border="0" height="610" width="950"></td>
+      </tr>  
+    </tbody></table>
+</p><p>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparklines for monitoring search</i>
+</p><p>Dear Edward, here is a paper that uses sparklines:</p><p></p><p><a target="_blank" href="http://www.cond.org/www520-adar.pdf">http://www.cond.org/www520-adar.pdf</a></p><p></p><p> "Why We Search: Visualizing and Predicting User Behavior"
+Eytan Adar, Daniel Weld, Brian Bershad, and Steven Gribble, to appear at WWW'07</p><p></p><p>Best wishes, eamonn  
+    </p><p>-- Eamonn Keogh (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0002kq">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice</i>
+</p><p>Dear Edward, There is a very interesting project at UCLA that uses Sparklines (<a target="_blank" href="http://sensorbase.org/">http://sensorbase.org/</a>)</p><p></p><p>Best wishes, eamonn
+  
+    </p><p>-- Eamonn Keogh (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0002qz">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>It looks very good. Should have been done this way years ago.  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparkline aspect ratio</i>
+</p><p> </p><p>In <i>Beautiful Evidence,</i> I verbally implemented ("make sparklines lumpy, not 
+spikey and not 
+flat") Bill Cleveland's brilliant analytical method of choosing aspect ratios banking to 
+45° (William S. Cleveland, <i>Visualizing Data,</i> 1993). 
+</p><p>A 
+recent paper by Jeffrey Heer and Maneesh Agrawala, "Multi-Scale Banking to 45°," 
+<i>IEEE Transactions on Visualization and Computer Graphics,</i> 12 (September/
+October 
+2006) provides a way to generate banked sparklines by 
+inputting the data set and the typeface (which provides the vertical dimension if the 
+sparkline is to fit a typographic line, as is usually the case). </p><p>The link to Heer and 
+Agrawala is <a target="_blank" href="http://vis.berkeley.edu/papers/banking/2006-Banking-InfoVis.pdf">here</a>.</p><p>The general lesson of the paper is to look at multiple views of 
+the same data—because different views answer different questions.  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice</i>
+</p><p>Google have incorporated sparklines into their new release of their Analytics (web site statistics) software.</p><p></p><p>Have a look here: <a target="_blank" href="http://analytics.blogspot.com/2007/05/new-version-of-google-analytics.html">http://analytics.blogspot.com/2007/05/new-version-of-google-analytics.html</a></p><p></p><p>Shame about the pie chart though.  
+    </p><p>-- Ben Bodien (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0002sE">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice</i>
+</p><p>Google Experimental Labs is now offering a timeline view that uses sparklines -- see <a target="_blank" href="http://www.google.com/experimental/">http://www.google.com/experimental/</a>  
+    </p><p>-- David Mackinder (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0002t5">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice</i>
+</p><p> Not a sparkline per say, but a word-size graphic: the <a href="http://www.summize.com/">Summize</a> folks offer <a href="http://www.summize.com/about.html">a more data-rich alternative to 5-star ratings</a>. [<a href="http://www.37signals.com/svn/posts/433-sunspots-the-silverware-edition">via</a>]  
+    </p><p>-- Bil Kleb (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0002td">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Standardization</i>
+</p><p> </p><p>Sparklines make it easy to compare multiple time series. 
+As always, scaling is crucial: It can ruin or raise beautiful evidence. 
+The following sparklines depict stock quotes of selected DowJones 
+companies for 2007-01-03 through 2007-06-15.</p>
+
+<p><img src="EdwardTufte_files/ask_et_DJ_Zellskalierung_MinMax.png" alt="">&nbsp;&nbsp;&nbsp;<img src="EdwardTufte_files/ask_et_DJ_Spaltenskalierung_NullMax.png" alt=""></p>
+
+<p>The graph on the left scales from min to max for each quote, 
+misleading the eye to believe that the series could be compared 
+visually. However, without processing the min and max values mentally 
+one cannot. The graph on the right side provides a "fair" scale as it 
+scales from 0 to the max of all quotes, yet it is useless because most 
+of the evidence is gone.</p> 
+
+<p><img src="EdwardTufte_files/ask_et_DJ_Abweichung_Normwert_Spaltenskala_MinMax.png" alt=""></p>
+
+<p>Very helpful, but rarely used in everyday practice is <a target="_blank" href="http://blog.bissantz.com/norm">standardization</a>,
+ which is very intuitively understood. The graph shows the variance from
+ an identical initial investment of 100 USD for each quote, in other 
+words, your gains and losses.</p>  
+    <p>-- Nicolas Bissantz (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0002vk">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Google graphics</i>
+</p><p> Google has released a fairly simple <a target="_blank" href="http://code.google.com/apis/chart/">API</a> to produce line plots, 
+scatter plots, bar graphs, Venn diagrams and pie charts. Data and presentation information are encoded into the URL 
+for 
+an image. While there are plenty of opportunities for chartjunk and poor 
+displays, it seems possible to make decent plots. Here  is a sparkline created with the API  <img src="EdwardTufte_files/chart_004.png">. See Jonathan Corum's <a target="_blank" href="http://www.style.org/chartapi/">Google Charting Tool</a> for a simple way to create the charts.  
+    </p><p>-- Michael Galloy (<a href="http://www.edwardtufte.com/tufte/email?msg_id=000345">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>OS monitoring with sparklines</i>
+</p><p>MenuMeters is a MacOS X utility by Alex Harper which can make 
+sparklines in your menubar. It's a good example of using sparklines to 
+present data in a text-sized space. Here is a screenshot of my menubar; 
+the sparklines are for network traffic (inbound up, outbound down), CPU 
+utilization (user top, system below), and memory utilization (active 
+top, unpaged bottom), respectively. Each is updated periodically; each 
+is a menu with much more detailed information.
+</p><ul><li><a href="http://www.edwardtufte.com/bboard/images/00034G-7717.png">Picture 1.png</a></li></ul>  
+    <p>-- Garth A. Dickie (<a href="http://www.edwardtufte.com/tufte/email?msg_id=00034G">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Baseball sparklines</i>
+</p><p> </p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/00034a-7726.gif" border="0" height="388" width="425"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+Source: <i>New York Times,</i> December 15, 2007, p. D1
+</p><p>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Financial sparklines</i>
+</p><p> I maintain a site that keeps track of changes to the Dollars 
+Traded Index and recently added sparklines to all of the daily posts 
+that highlight companies that had above normal volume of dollars traded 
+on the NYSE/Nasdaq.  I used the Google Charts API to render the graphs, 
+which made my job much easier.  The sparklines add context to understand
+ why a company is on a given report and if a spike in dollars traded is 
+on the first day of some breaking news, coming down from a previous 
+peak, or enjoying a longer term trend.  It also gives the user the 
+ability to visually filter for the kind of trends they like to follow 
+the most.  I believe it has made the previously text-only data tables a 
+lot more usable.<br>
+<br>
+<br>
+<a target="_blank" href="http://www.dollarstraded.com/viewtopic.php?f=16&amp;t=1050">Adds/Drops for Thursday, December 27, 2007</a><br>
+<br>
+<br>
+Also at the bottom of each table I link to a post to further explain the sparklines in more detail:<br>
+<a target="_blank" href="http://www.dollarstraded.com/viewtopic.php?f=20&amp;t=911">Sparklines</a><br>
+<br>
+Eric Wikman  
+    </p><p>-- Eric Wikman (<a href="http://www.edwardtufte.com/tufte/email?msg_id=00035I">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Google's financial sparklines</i>
+</p><p> Google's redesign of sparklines fails to capture the intensity and capacity of real sparklines. Also, sparklines should 
+usually have some scaling (as in most examples in <i>Beautiful Evidence</i>) and should be deeply integrated into 
+tables, text, or graphics. Here are model examples (<i>Beautiful Evidence,</i> pp. 50, 51):
+<br><br>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/00035L-7730.gif" border="0" height="1017" width="700"></td>
+      </tr>  
+    </tbody></table>
+</p><p>
+
+    <table align="center" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/00035L-7731.gif" border="0" height="992" width="700"></td>
+      </tr>  
+    </tbody></table>
+</p><p>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>EveryBlock sparklines</i>
+</p><p> </p><p>Good sparklines tracking building permits by neighborhood over time <a target="_blank" href="http://sf.everyblock.com/building-permits/locations/neighborhoods/">here.</a>  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Sparklines useful for USGS streamflows</i>
+</p><p> </p><p>Sparklines could help protect life and property if they were used to present the USGS online data for 
+streamflows. The current presentation is dismal. For example, find a gauge for a river near you on the USGS’ 
+page of <a target="_blank" href="http://waterdata.usgs.gov/nwis/rt">Daily Streamflow Conditions</a>. 
+Click through to the individual page for that gauge, and generally you will see this information (some pages show 
+more data; others, less):</p>
+<ul>
+<li>a plot of streamflows (or “discharge”) recorded over the last 7 days (you can extend the range to 
+as much as the last 31 days, but that does not change the main point of this argument)</li>
+<li>a table showing this summary information <em>for the current date</em>:
+<ul>
+<li>the lowest flow on record</li>
+<li>the 20th-percentile flow</li>
+<li>mean flow</li>
+<li>median flow</li>
+<li>most recent instantaneous flow recorded (today)</li>
+<li>the 80th-percentile flow</li>
+<li>the highest flow on record</li>
+</ul>
+</li>
+<li>a plot of gauge heights recorded over the last 7 days</li>
+<li>a table of summary information, similar to that described above for streamflow, for gauge heights <em>on the 
+current date</em></li>
+</ul>
+<p>What's missing? <strong>Perspective.</strong> For example:</p>
+<ul>
+<li>If the stream is near flood stage, the corresponding value will appear on the respective plots, but otherwise 
+there is usually no indication of how far above or below flood stage today’s flow is.</li>
+<li>There’s no information for the flood of record or for any other historic benchmarks not recorded on the 
+currrent date. A rancher can tell whether the stream is high for today, but not whether it’s <em>even close 
+to</em> the level it reached when it drowned his livestock 30 months ago.</li>
+<li>Realistic ranges of values are often absent. The highest and lowest values shown on each plot depend on the 
+values recorded over the last 7 days. If there has been little change, the full vertical range of values displayed may 
+represent only an inch of difference in gauge height, for example. But the height of the display is the same, 
+regardless of whether that range is 0.01 foot or 100 feet. So trivial changes are exaggerated, and historic changes 
+are minimized.</li>
+<li>You can see how gauge height varied with streamflow over the last 7 days, but not how it <em>will</em> 
+respond to values outside that range: Will the additional 3000 cfs coming downstream raise this stream an inch or 
+12 
+feet when it gets to this gauge?</li>
+<li>For that matter, the wealth of information available about seasonal behavior of this stream is absent. When is it 
+typically low? And how low is that, typically?</li>
+</ul>
+<p>A spark chart would show all of the above and more. It would be particularly useful when flooding occurs 
+outside of the typical flood season—for example, when heavy rains fall in usually bone-dry July, how does 
+the flooding produced compare to the typical spring floods? Will it merely call for a change in plans for the weekend, 
+or will it pose a great danger to lives and property? In fact, it was just such an event a little over five years ago that 
+led me to propose to the local USGS office that they use spark charts to display this information.</p>
+<p>So far, no response.</p>
+
+
+  
+    <p>-- Cliff Tyllick (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003A1">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Bivariate financial performance matrix</i>
+</p><p>In looking at financial time series, one of the challenges is to 
+be able to analyse a very large number of bivariate relationships. Some 
+of this can be achieved by statistical measures but visualisation of the
+ relationships typically has a significantly positive impact. In the 
+attached image, I've attempted to do this (with inspiration attributable
+ to Cleveland) by plotting these bivariate relationships in a matrix. As
+ this analysis is time series analysis, and given that the relationships
+ are symmetrical, I have split the two halves of the matrix into the 
+top-right showing the bivariate x-y plot (the different format 
+datapoints are to highlight different periods of time, with more recent 
+data darker and the latest datapoint shown as red with a callout), and 
+the bottom left showing the time series of the difference between the 
+two series (for those who are interested, the series being plotted are 
+of credit default swap indices, ranked from lowest to highest average 
+spread down the rows with the exception of the two emerging market 
+indices in the top-left - I work in Emerging Markets). The diagonal then
+ shows the time series of each individual index. I would be curious to 
+know if anyone has any feedback or suggestions on how this could be 
+improved.</p><p><img src="EdwardTufte_files/0003Cs-8047.GIF" height="824" width="779"><br clear="all">  
+    </p><p>-- Will Oswald (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003Cs">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i> </i>
+</p><p>Will Oswald's Cross-Credit Historical Relationships matrix is 
+wonderful.  Always a fan of these "you are here" plots, I love the black
+ dots against the grey past-values distribution and the red current 
+value.  We can see the current data in relation to the past.  Beautiful 
+layering.</p><p></p><p>Perhaps what is most instructive is how the 
+simple times series don't tell the whole story as they are only marginal
+ distribution summaries; Will has shown us the joint distirbution, 
+which, as is typical, tells a richer story.</p><p></p><p>Compare the 
+data for the third and fourth entries (NA.IG and NA.IG.HVOL) to the data
+ for the sixth and seventh entries (NA.HY B and NA.HY).  Looking just at
+ the time series, the third and fourth entries look mildly similar: 
+flat, then big bump, then rise-to-peak, then fall.  The difference plot 
+shows that the differences go flat, then attenuated bump, then rising 
+bumps.  The joint distribution shows a really tight relationship, as 
+evidenced by the points so close to the line.</p><p></p><p>Now look at 
+the sixth and seventh. The time series look very similar: small rise 
+then fall, then bump, then bigger rise then fall.  The difference plot 
+isn't particularly special but the scatter plot of the joint 
+distribution shows that the recent data are completely different from 
+what has happened in the past: all but one of the black dots is 
+completely removed from the other points!</p><p></p><p>Well done, Will.</p><p></p><p>Rafe
+  
+    </p><p>-- rafe donahue (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003Ct">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice </i>
+</p><p>Google Finance recently made over their stock pages and there appear to be sparkline-like objects.   
+    </p><p>-- Dan Nolen (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003UK">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice </i>
+</p><p>Here is an Excel PM talking about Sparklines in Excel
+<a target="_blank" href="http://blogs.msdn.com/excel/archive/2009/07/17/sparklines-in-excel.aspx">http://blogs.msdn.com/excel/archive/2009/07/17/sparklines-in-excel.aspx</a>
+  
+    </p><p>-- Brian Kennemer (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003UP">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice </i>
+</p><p>Reporting in from The Northern League ... a lead change for the first time all year:
+<a target="_blank" href="http://www.rationalsys.com/aplayattheplate.html">http://www.rationalsys.com/aplayattheplate.html</a></p><p></p><p>  
+    </p><p>-- Michael Round (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003Ua">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Google's sparklines implementation</i>
+</p><p> <b><a target="_blank" href="http://www.google.com/analytics/features.html">Google Analytics</a></b> features sparkline graphics in portions of its reports:
+
+</p><p>
+<img src="EdwardTufte_files/googleanalyticssparklin.htm" height="159" width="800">
+</p>
+
+The amount of data included in the sparklines is dependent on the date 
+range selected for the report.  The implementation here generally 
+conforms to your recommendations, as there are no unnecessary borders, 
+and the graphics are presented in a comparative format.<ul><li><a href="http://www.edwardtufte.com/bboard/images/0003Um-9148.png">google_analytics_sparklines.png</a></li></ul>  
+    <p>-- Daniel Thornton (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003Um">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Phish Statistics Visualized: Summer Tour 2009</i>
+</p><p>Hey there -</p><p></p><p>I recently went public with my first blog post featuring sparklines, using them to represent 
+live performance data for the band Phish.</p><p></p><p>Here's a link to the post...</p><p></p><p><a target="_blank" href="http://jamtopia.com/blog/phish-statistics-visualized-summer-tour-2009/">http://jamtopia.com/blog/phish-statistics-visualized-summer-tour-2009/</a></p><p></p><p>... which features two sparkline exhibits based on the band's 2009 Summer Tour. </p><p></p><p>The first exhibit looks at some of the most played songs from the tour while the second 
+exhibit explores the shortest and longest sets, based on number of songs played.</p><p></p><p>I hope you get a kick out of this most frivolous use of an otherwise important technique. 
+They were a little painful to put together but quite rewarding in what they revealed.</p><p></p><p>Take care,</p><p></p><p>Todd Levy</p><p></p><p><a target="_blank" href="http://jamtopia.com/">http://jamtopia.com</a>  
+    </p><p>-- Todd Levy (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003VI">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice </i>
+</p><p> </p><p>Flickr has been using a single sparkline on its user accounts "recent activity" page to give a glance at the user's site 
+traffic:</p>
+<p><a target="_blank" href="http://www.flickr.com/photos/lamidesign/3856938680/" title="flickrsparkline by lavardera, on 
+Flickr"><img src="EdwardTufte_files/3856938680_b80f42e9c5_o.png" alt="flickrsparkline" height="64" width="246"></a></p><ul><li><a href="http://www.edwardtufte.com/bboard/images/0003Vh-9157.png">flickrsparkline.png</a></li></ul>  
+    <p>-- Greg La Vardera (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003Vh">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice </i>
+</p><p> We put easy-to-use sparklines on the iphone in a new app called 
+TraxStocks.  These can do some of what is requested above.    A posting 
+in a different thread on this site got us some helpful feedback a few 
+months ago.
+</p><p>
+</p><p><a href="http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=328195811&amp;mt=8">Link to TraxStocks at the appstore</a>
+</p><p>
+</p><p>The things that make this app different than many of the other stock apps out there are 
+</p><p>1) Sparklines
+</p><p>2) Allowing comparisons.  You can drag the top sparkline around 
+the screen over any other sparkline.  OR, you can put several items 
+together a single graph if you turn your iphone or ipod touch on its 
+side.  The images I've attached show only two stocks, but you can have 
+up to 10 on the graphs in landscape mode, and there's no limit to the 
+number of sparklines in the portrait mode.
+</p><p>3) Elimination of chart junk.  Almost all all "non-data ink" has 
+been erased. There are a few exceptions that seemed to provide a needed 
+visual boundaries.
+</p><p>4) Swiping through time
+</p><p>5) The ability to look broadly at trends, and immediately get 
+specific data for specific dates by just touching the screen at that 
+spot.  A bubble pops up showing the date and value.  
+</p><p>
+</p><p>We welcome more feedback -- especially from readers here.  These 
+displays could be used for nearly any data over time, but we started 
+with financial data. I look forward to hearing your thoughts.  Thanks.
+</p><p>
+</p><p>Aurora</p><p><img src="EdwardTufte_files/0003W7-9171.jpg" height="382" width="320"><br clear="all"></p><p><img src="EdwardTufte_files/0003W7-9172.jpg" height="234" width="480"><br clear="all"></p><p><img src="EdwardTufte_files/0003W7-9173.jpg" height="234" width="480"><br clear="all">  
+    </p><p>-- Aurora Matzkin (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003W7">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice </i>
+</p><p> </p><p>Many people find the TraxStocks displays shown above 
+fairly intuitive on the device. In my previous posting I failed to 
+include a link to the "key" for the iphone sparklines shown in the 
+images. 
+
+</p><p><a target="_blank" href="http://allofzero.com/traxstocks/apphelp/">link to explanation</a>
+
+</p><p> This link is also directly accessible from the app by touching the "i".  
+    </p><p>-- Aurora Matzkin (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003W8">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Twitter Boxplots and Line graphs</i>
+</p><p> <a href="http://www.edwardtufte.com/bboard/www.kidstrythisathome.com/2010/08/twitter-sparkline-generator/">I've got one to add to this list - more 
+sparklines for Twitter</a><br><br>
+
+The two examples I used in the post are demonstrated in this snippet of text:<br>
+Perth 30/06/10: Cool (4.1&#9507;&#9607;&#9607;|&#9607;&#9473;&#9473;&#9515;17.7), max at 2pm, cooling to 
+around 13??C after 3pm, steady afterwards. 
+(&#10468;&#10468;&#10432;&#9144;&#10432;&#10432;&#10432;&#9144;&#10432;&#10432;&#10340;&#9144;
+0292;&#10266;&#10267;&#9144;&#10267;&#10267;&#10265;&#9144;&#10258;&#10258;&#10258;&#9144;&#10258;
+;&#10290;&#10294;&#9144;&#10294;&#10294;&#10294;)<br><br>
+
+The boxplot approximates the range of each of the quartiles and the line graph relies on people perceiving two vertical 
+dots as representing a number somewhere between them both.<br><br>
+
+They aren't the best graphs, but for limited, text-based communication I think they do quite well.  
+    </p><p>-- Samuel Spencer (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003il">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice </i>
+</p><p>In Excel the option under the charts tab for sparklines include three types of graphics, lines, bars,and 
+win/loss. Colors and size can be edited. The resulting sparkline can be resized and embedded in Word 
+documents and tables, etc. although the graphics are a bit cumbersome to move to a format like eps. I also 
+embedded text (Jan on one end and Dec on the other) into the sparklines I used in a recent report for the 
+State. The sparklines in the report disappeared when moving between platforms and a coworker's 
+computer and when converting to PDF. I finally got them to work properly but it required a bit of fiddling. </p><p></p><p>Deltagraph 6 on the Mac was much easier for exporting the resulting graphic and provided better looking 
+output and transportability. </p><p></p><p>The LaTeX package mentioned above somewhere works well on my Mac also. </p><p></p><p>Hopes this helps.  
+    </p><p>-- Jay Lee (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003l2">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Wayback Machine sparklines drive the interface</i>
+</p><p>One of the best sparkline applications ever:</p><p></p><p><a target="_blank" href="http://newsbreaks.infotoday.com/NewsBreaks/Internet-Archive-Releases-New-Version-of-The-Wayback-Machine-73492.asp">http://newsbreaks.infotoday.com/NewsBreaks/Internet-Archive-Releases-New-Version-of-The-Wayback-Machine-73492.asp</a>
+  
+    </p><p>-- Edward Tufte<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparklines: theory and practice </i>
+</p><p> </p><p>Is it just me, or would it be nice to see the ubiquitous
+<img src="EdwardTufte_files/stars-3-5.gif"> ratings just replaced by
+<img src="EdwardTufte_files/chart_003.png"> rate-ograms?</p>
+
+<p>Amazon currently reports that Bill  Clinton's <em>My Life</em> is rated
+<img src="EdwardTufte_files/stars-3-5.gif"> (704 customer reviews), Sean Hannity's <em>Conservative Victory</em> is rated
+<img src="EdwardTufte_files/stars-4-0.gif"> (291 customer reviews) and Edward Tufte's <em>Envisioning Information</em> is rated
+<img src="EdwardTufte_files/stars-4-5.gif"> (61 customer reviews). It takes a mouse hover on the stars to display a horizontal histogram of 
+ratings.</p>
+
+<p>But for the same screen real estate, it's far easier to notice that the 701 reviewers 
+who rated <em>My Life</em> as 
+<img src="EdwardTufte_files/chart_002.png">
+and the 291 who rated <em>Conservative Victory</em> as 
+<img src="EdwardTufte_files/chart.png">, are more polarized in their opinions than the 61 who 
+rated
+Tufte's <em>Envisioning Information</em> as
+<img src="EdwardTufte_files/chart_005.png">
+</p>
+<p>(Rate-ograms generated via <a target="_blank" href="http://code.google.com/apis/chart/">Google charts</a>.)</p>
+
+  
+    <p>-- kb (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003m0">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparkline theory and practice </i>
+</p><p> </p><p>Sparklines used on Twitter by Wall Street Journal, May 6 2011, to share unemployment statistics using 
+Unicode graphics symbols.</p>
+<p>&#9607;&#9606;&#9606;&#9607;&#9607;&#9607;&#9607;&#9605;&#9602;&#9601;&#9601;&#9602; Last 12 
+months of the U.S. unemployment rate, which rose to 9% in April. More data: <a href="http://on.wsj.com/jkZPs9">http://on.wsj.com/jkZPs9</a></p>
+<p>More examples on <a target="_blank" href="http://kottke.org/11/05/twitter-sparklines">http://kottke.org/11/05/twitter-
+sparklines</a></p>
+  
+    <p>-- Craig Pickering (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003nU">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparkline theory and practice </i>
+</p><p> Sparklines have become a topic of interest using Unicode on Twitter. See<br>
+</p><p>
+Pro: <a target="_blank" href="http://kottke.org/11/05/twitter-sparklines">http://kottke.org/11/05/twitter-sparklines</a>
+</p><p>
+Con: <a target="_blank" href="http://thanland.com/notes/regarding-those-sparktweets/">http://thanland.com/notes/regarding-those-sparktweets/</a>
+</p><p>
+It would be interesting to have Mr Tufte add his voice as to their usefulness. My take is that they provide a visual 
+component to the best of the mediums ability compared to bare numbers, so in that they are useful to display trends.
+</p><p>
+<b>ET comments:
+</b></p><p><b>
+"Sparktweets" on Twitter as happily described by Jason Kottke at <a target="_blank" href="http://kottke.org/11/05/twitter-" sparklines="">http://kottke.org/11/05/twitter-sparklines</a>
+</b></p><p><b>
+Skepticism about sparktweets from Than Tibbets at <a target="_blank" href="http://thanland.com/notes/regarding-those-" sparktweets="">http://thanland.com/notes/regarding-those-sparktweets/</a>
+</b></p><p><b>
+Than Tibbets rightly criticizes the <i>Wall Street Journal</i> sparktweets, but perhaps some sparktweets can be 
+rescued.
+</b></p><p><b>
+My view: if you're doing Twitter, then sparktweets is about all you can do in regard to data graphics. So now and then a 
+sparktweet will be better than nothing, but that's all it's better than (which is a short summary of Twitter in general, 
+although is it amazing what now and then can be done in one 140-character sentence). Sparktweets are awfully low 
+resolution and easily prone to data distortion. The solution: every sparktweet should be accompanied by the beginning 
+and the ending number in the time sequence (which burns up 6 to 8 characters toward the 140 maximum, but with a 
+great increase in data-presentation integrity). Sparktweets don't measure up to real sparklines, however.
+</b></p><p><b>
+A few of the examples shown by Jason Kottke have decent resolution. For example, this clever baseball win/loss 
+summary by Stu Spivack (which alas has to fold the last 7 games onto the third and fourth lines):
+</b></p><p><b>
+
+    <table align="left" border="0">
+      <tbody><tr>
+        <td><img src="EdwardTufte_files/0003nV-10440.jpg" border="0" height="164" width="501"></td>
+      </tr>  
+    </tbody></table>
+<br><br><br><br><br><br><br><br><br><br></b>  
+    </p><p>-- AJ (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003nV">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparkline theory and practice </i>
+</p><p> I just noticed sparklines being used by Quantcast to illustrate web traffic; as seen here on <a target="_blank" href="http://drudgereport.com/">drudgereport.com</a>: <br><br>
+<img src="EdwardTufte_files/widgetImage.png">
+
+  
+    </p><p>-- Tait (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003pC">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparkline theory and practice </i>
+</p><p> One of the convenient things about the Twitter-style sparklines 
+is that as Unicode text, they work everywhere text does. So you can 
+write a command-line generator for them: <a target="_blank" href="https://github.com/holman/spark">github.com/holman/spark</a>
+<br>
+And then you can pipe in data from the rest of the command-line ecosystem. I like the earthquake example myself:
+<br>
+</p><pre> curl http://earthquake.usgs.gov/earthquakes/catalogs/eqs1day-M1.txt --silent | 
+  sed '1d' |
+  cut -d, -f9 |
+  spark
+<span style="font-size:0.7em">&#9605;&#9606;&#9602;&#9603;&#9602;&#9602;&#9602;&#9605;&#9602;&#9602;&#9605;&#9607;&#9602;&#9602;&#9602;&#9603;&#9606;&#9606;&#9606;&#9605;&#9603;&#9602;&#9602;&#9602;&#9601;&#9602;&#9602;&#9606;&#9601;&#9603;&#9602;&#9602;&#9602;&#9602;&#9603;&#9602;&#9606;&#9602;&#9602;&#9602;&#9601;&#9602;&#9602;&#9603;&#9602;&#9602;&#9603;&#9602;&#9602;&#9603;&#9602;&#9602;&#9601;&#9602;&#9602;&#9605;&#9602;&#9602;&#9606;&#9606;&#9605;&#9603;&#9606;</span>
+</pre>
+
+More useful, graphing Beijing air quality:
+
+<pre>curl -s https://twitter.com/statuses/user_timeline/15527964.rss | 
+    grep /description | 
+    perl -nle "print \$1 if /PM2.5;[^;]+; (\d+)/" | spark
+<span class="font-size:0.7em">&#9606;&#9606;&#9607;&#9608;&#9607;&#9607;&#9606;&#9606;&#9603;&#9606;&#9601;&#9601;&#9603;&#9604;&#9604;&#9604;&#9603;&#9606;</span>
+</pre>  
+    <p>-- gwern (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003qe">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparkline theory and practice </i>
+</p><p>See <a target="_blank" href="http://ssrn.com/abstract=2141475">http://ssrn.com/abstract=2141475</a>
+ for a paper testing the ability of students to use sparklines to detect
+ patterns and anomalies in financial report data. The examples integrate
+ semimonthly sparklines into conventional income statements, thus 
+providing 25 times the original number of data points, albeit at low 
+resolution. The students were able to use the sparklines to answer 
+fairly complex questions, with no prior training in sparklines. The 
+paper will be published in the February issue of International Journal 
+of Accounting Information Systems.   
+    </p><p>-- Daniel Tinnkelman (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003tZ">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Response to Sparkline theory and practice </i>
+</p><p> </p><p><a target="_blank" href="http://mashable.com/">Mashable</a> posts have a "velocity graph" that shows how 
+often said article is shared on 
+different social networking websites.</p>
+
+<img src="EdwardTufte_files/mashable-sparklines.png">  
+    <p>-- Francisco Lobos Gonzalez (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003uK">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p><i>Axes in sparklines</i>
+</p><p> </p><p>Almost every sparkline I've seen has omitted the x-axis, and for the good reason that the lower limit is rarely zero. 
+However for one case I'm dealing with (fraud statistics), an important fact to illustrate is how close to zero the fraud 
+level gets. So what I ended up with was something like:</p>
+
+<p><strong>Counterfeit fraud</strong> <img src="EdwardTufte_files/apacs-spark-Counterfeit.png" alt="Counterfeit" class="aligncenter 
+size-full wp-image-5098" style="vertical-align: middle" height="21" width="56">&nbsp;<span style="color: red">(??42.1m)</span></p>
+
+<p>I also included a y-axis, to allow comparison to data where there are missing elements, e.g.:</p>
+
+<p><strong>Telephone banking fraud</strong> <img src="EdwardTufte_files/apacs-spark-Phone.png" alt="Telephone banking" title="Telephone banking" class="aligncenter size-full wp-image-5118" style="vertical-align: middle" height="21" width="56">&nbsp;<span style="color: 
+red">(??39.6m)</span></p>
+
+<p>The horizontal scale of each sparkline is the same, but the vertical scale is from zero to the maximum value of the 
+data. I would have preferred to use the same vertical scale, but due to one value being about ten times as much as 
+others, it would result in most other graphs dragging along the x-axis.</p>
+
+<p>The grey rectangle on the left indicates a period of time which is of interest (the deployment of a new anti-fraud 
+mechanism), matching the full size chart, which 
+can be seen in context in the <a target="_blank" href="http://www.lightbluetouchpaper.org/2013/03/13/uk-bank-fraud-up/">blog 
+post where I used these sparklines</a>.</p>
+
+<p>I've tried to make the axes as unobtrusive as possible, and I do think they add important information for this data 
+set, but I'd appreciate other opinions on this matter.</p>  
+    <p>-- Steven Murdoch (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003vG">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tbody><tr>
+		<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+		<td style="width: 50em;" width="100%">
+		<p>The New York Times graphics team has (again) used sparklines effectively in a couple of 
+recent graphics. There may be more, but I noticed these two.</p><p></p><p>The first is part of the explanatory text for a terrific graphic by Mike Bostock, Shan 
+Carter, and Kevin Quealy that shows the history of college football conference alignments. 
+The rest of the graphic is so compelling and engrossing that the sparkline may be easy to 
+miss.
+(<a target="_blank" href="http://www.nytimes.com/newsgraphics/2013/11/30/football-conferences/">http://www.nytimes.com/newsgraphics/2013/11/30/football-conferences/</a>)</p><p></p><p>The second is part of the home page for The Upshot. The header includes a small section that 
+shows, with both text and a sparkline, which party is projected to win the Senate according 
+to the Upshot's forecasting model. This nice touch is also, apparently, the work of Mike 
+Bostock and Shan Carter. (<a target="_blank" href="http://www.nytimes.com/upshot/">http://www.nytimes.com/upshot/</a>)</p><p></p><p>In both cases, the sparklines are used beautifully as ET originally conceived them: "a small 
+intense, simple, word-sized graphic with typographic resolution."  
+    </p><p>-- Kyle Peterson (<a href="http://www.edwardtufte.com/tufte/email?msg_id=0003zJ">email</a>)<br clear="all">
+		</p><p></p><hr align="left" color="#666666" noshade="noshade" size="1"><p></p>
+		</td>
+		</tr>
+		</tbody></table>
+
+		<table cellpadding="0" cellspacing="0">
+		<tbody><tr>
+			<td><img src="EdwardTufte_files/sidebar.jpg" border="0" height="1" width="25"></td>
+			<td style="width: 50em;">
+			<p>
+			</p><form action="q-and-a-post-reply-form">
+			<input name="topic_id" value="1" type="hidden">
+			<input name="refers_to" value="0001OR" type="hidden">
+			<div align="center"><input value="Contribute" type="submit"></div>
+			</form>
+			</td>
+		</tr>
+		</tbody></table>
+
+
+
+		<table cellpadding="0" cellspacing="0">
+			<tbody><tr>
+			<td><img src="EdwardTufte_files/sidebar.jpg" alt="" border="0" height="1" width="25"></td>
+			<td style="width: 50em;">
+			<hr size="1" width="1024">
+			<br>
+		
+		<table border="0" cellpadding="0" cellspacing="0" width="1024">
+		<tbody><tr><td colspan="2"> Threads relevant to sparklines:</td></tr>
+		<tr valign="top"><td width="500"><div class="taglink"><a href="http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0000ck">Formula 1 real-time telemetry displays</a></div><div style="margin-top: 4px">Narrative sparklines should replace one-at-time instantaneous performance readings.</div><div class="taglink"><a href="http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0003oC">Sparkline &gt; Steve Jobs &gt; Andy Warhol in Google results</a></div><div class="taglink"><a href="http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0000Lk">Sparklines: computer code  implementation</a></div><div style="margin-top: 4px">Open-source
+ and proprietary computer codes for sparklines are nowwidely available. 
+This thread reviews a few of the many possibilities.</div></td><td width="24"><br></td><td width="500"><div class="taglink"><a href="http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001lh">Sports graphics</a></div><div style="margin-top: 4px">Sports data (along with financial and medical data) are an obvious  and natural application of sparklines.</div><div class="taglink"><a href="http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001dW">Validation of  Sparkline Computer Code </a></div><div style="margin-top: 4px">An early effort to set sparkline code standards, an effort which was soon overwhelmed  by all the different codings.</div><div class="taglink"><a href="http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0002vW">Wavefields: intense animated data graphics </a></div></td></tr>
+		</tbody></table><p></p><hr size="1" width="1024">
+			</td>
+			</tr>
+		</tbody></table>
+		
+
+</a></td>
+</tr>
+</tbody></table>
+
+
+
+
+
+</body>
+</html>
